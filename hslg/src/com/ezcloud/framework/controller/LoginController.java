@@ -22,14 +22,14 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cxhl.service.ShopAdminService;
-import com.cxhl.service.ShopService;
 import com.ezcloud.framework.exp.JException;
 import com.ezcloud.framework.service.login.Login;
 import com.ezcloud.framework.service.system.Staff;
 import com.ezcloud.framework.util.Message;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
+import com.hslg.service.ShopAdminService;
+import com.hslg.service.ShopService;
 
 /**
  * 系统用户登陆控制器
