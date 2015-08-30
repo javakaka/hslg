@@ -22,10 +22,10 @@ import com.ezcloud.utility.DateUtil;
  * @author shike001 
  * E-mail:510836102@qq.com   
  * @version 创建时间：2014-12-26 下午3:14:51  
- * 类说明: 收货地址
+ * 类说明: 用户收藏的商品
  */
 
-@Component("cxhlUserCollectionService")
+@Component("hslgUserCollectionService")
 public class UserCollectionService extends Service{
 
 	public UserCollectionService() {
@@ -34,7 +34,6 @@ public class UserCollectionService extends Service{
 
 	
 	/**
-	 * 点击进入商家详情
 	 * @param id
 	 * @return
 	 */
@@ -42,31 +41,34 @@ public class UserCollectionService extends Service{
 	public Row find(String id)
 	{
 		Row row =null;
-		String sSql =" select a.id,a.c_id as shop_id,a.create_time , "
-				+ " b.c_name as shop_name,b.remark from cxhl_user_collection a " 
-				+" left join cxhl_shop b on a.c_id=b.id "
+		String sSql =" select a.id,a.goods_id,a.create_time , "
+				+ " b.name as goods_name,b.detail,c.username,c.telephone from hslg_user_collection_goods a " 
+				+" left join hslg_goods b on a.goods_id=b.id "
+				+" left join hslg_users c on a.user_id=c.id "
 				+" where a.id ='"+id+"' ";
 		row =queryRow(sSql);
 		return row;
 	}
 	
-	public Row findByUserIdAndShopId(String user_id,String shop_id)
+	public Row find(String user_id,String goods_id)
 	{
 		Row row =null;
-		String sSql =" select * from cxhl_user_collection where user_id='"+user_id+"' and c_id='"+shop_id+"' ";
+		String sSql =" select * from hslg_user_collection_goods " 
+				+" where user_id ='"+user_id+"' and goods_id='"+goods_id+"' ";
 		row =queryRow(sSql);
 		return row;
 	}
+	
 	
 	
 	@Transactional(value="jdbcTransactionManager",propagation=Propagation.REQUIRED)
 	public int insert(Row row)
 	{
 		int num =0;
-		int id =getTableSequence("cxhl_user_collection", "id", 1);
+		int id =getTableSequence("hslg_user_collection_goods", "id", 1);
 		row.put("id", id);
 		row.put("create_time", DateUtil.getCurrentDateTime());
-		num =insert("cxhl_user_collection", row);
+		num =insert("hslg_user_collection_goods", row);
 		return num;
 	}
 	
@@ -75,9 +77,8 @@ public class UserCollectionService extends Service{
 	{
 		int num =0;
 		String id =row.getString("id",null);
-		row.put("modify_time", DateUtil.getCurrentDateTime());
 		Assert.notNull(id);
-		num =update("cxhl_user_collection", row, " id='"+id+"'");
+		num =update("hslg_user_collection_goods", row, " id='"+id+"'");
 		return num;
 	}
 	
@@ -94,7 +95,7 @@ public class UserCollectionService extends Service{
 		sql = "select * from "
 		+" ( "
 		+" select a.* ,b.c_name as collection_name,c.telephone,c.`name` as username "
-		+" from cxhl_user_collection a "
+		+" from hslg_user_collection_goods a "
 		+" left join cxhl_shop b on a.c_id=b.id "
 		+" left join cxhl_users c on a.user_id=c.id "
 		+" where a.c_type='0' "
@@ -106,7 +107,7 @@ public class UserCollectionService extends Service{
 		String countSql = "select count(*) from "
 				+" ( "
 				+" select a.* ,b.c_name as collection_name,c.telephone,c.`name` as username "
-				+" from cxhl_user_collection a "
+				+" from hslg_user_collection_goods a "
 				+" left join cxhl_shop b on a.c_id=b.id "
 				+" left join cxhl_users c on a.user_id=c.id "
 				+" where a.c_type='0' "
@@ -126,15 +127,18 @@ public class UserCollectionService extends Service{
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public DataSet list(String user_id,String page,String page_size)
 	{
 		DataSet ds =new DataSet();
 		int start =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
-		String sSql ="select a.id,a.c_id as shop_id,a.create_time , "
-				+" b.c_name as shop_name,b.remark,d.file_path from cxhl_user_collection a " 
-				+" left join cxhl_shop b on a.c_id=b.id  "
-				+" left join file_attach_control c on a.id=c.DEAL_CODE and c.DEAL_TYPE='shop_icon' " 
-				+" left join file_attach_upload d on d.CONTROL_ID=c.CONTROL_ID  "
+		String sSql ="select a.id,a.goods_id,a.create_time , "
+				+" b.name as goods_name,b.left_num,b.sale_num,"
+				+" b.raw_price,b.coupon_price,d.file_path "
+				+" from hslg_user_collection_goods a " 
+				+" left join hslg_goods b on a.goods_id=b.id "
+				+" left join file_attach_control c on a.id=c.DEAL_CODE and c.DEAL_TYPE='goods_icon' " 
+				+" left join file_attach_upload d on d.CONTROL_ID=c.CONTROL_ID "
 				+" where a.user_id ='"+user_id+"' "
 				+" order by a.create_time desc "
 				+" limit "+start+" ,"+page_size;
@@ -171,6 +175,18 @@ public class UserCollectionService extends Service{
 		return ds;
 	}
 	
+	public boolean isCollected(String user_id,String goods_id)
+	{
+		boolean bool =true;
+		String sql ="select count(*) from hslg_user_collection_goods where user_id='"+user_id+"' and goods_id='"+goods_id+"'";
+		int num =Integer.parseInt(queryField(sql));
+		if(num == 0)
+		{
+			bool =false;
+		}
+		return bool;
+	}
+	
 	/**
 	 * 删除
 	 * 
@@ -188,7 +204,7 @@ public class UserCollectionService extends Service{
 				}
 				id += "'" + String.valueOf(ids[i]) + "'";
 			}
-			sql = "delete from cxhl_user_collection where id in(" + id + ")";
+			sql = "delete from hslg_user_collection_goods where id in(" + id + ")";
 			update(sql);
 		}
 	}

@@ -27,7 +27,7 @@ import com.hslg.service.UserGiftService;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformUserGiftController")
-@RequestMapping("/cxhlpage/platform/member/gift")
+@RequestMapping("/hslgpage/platform/member/gift")
 public class UserGiftContrller  extends BaseController{
 
 	@Resource(name = "cxhlUserService")
@@ -48,7 +48,7 @@ public class UserGiftContrller  extends BaseController{
 		Page page = userGiftService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/gift/list";
+		return "/hslgpage/platform/member/gift/list";
 	}
 	
 	/**
@@ -67,12 +67,12 @@ public class UserGiftContrller  extends BaseController{
 		}
 		model.addAttribute("id", id);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/gift/SelectUser";
+		return "/hslgpage/platform/member/gift/SelectUser";
 	}
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/member/gift/add";
+		return "/hslgpage/platform/member/gift/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -126,7 +126,7 @@ public class UserGiftContrller  extends BaseController{
 		Assert.notNull(id);
 		Row userRow =userService.find(String.valueOf(id));
 		model.addAttribute("row", userRow);
-		return "/cxhlpage/platform/member/gift/edit";
+		return "/hslgpage/platform/member/gift/edit";
 	}
 
 	@RequestMapping(value = "/update")

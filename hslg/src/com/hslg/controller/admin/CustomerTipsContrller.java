@@ -25,8 +25,8 @@ import com.hslg.service.CustomerTipsService;
 /**
  * 用户反馈业务管理器
  */
-@Controller("fzbPlatformCustomerTipsController")
-@RequestMapping("/fzbpage/platform/customer_tips")
+@Controller("hslgPlatformCustomerTipsController")
+@RequestMapping("/hslgpage/platform/customer_tips")
 
 public class CustomerTipsContrller  extends BaseController{
 
@@ -47,7 +47,7 @@ public class CustomerTipsContrller  extends BaseController{
 		Page page = customerTipsService.queryPage(status, pageable);
 		model.addAttribute("page", page);
 		model.addAttribute("status", status);
-		return "/fzbpage/platform/customer_tips/list";
+		return "/hslgpage/platform/customer_tips/list";
 	}
 
 	@RequestMapping(value = "/edit")
@@ -61,7 +61,7 @@ public class CustomerTipsContrller  extends BaseController{
 			row.put("name", name);
 		}
 		model.addAttribute("row",row);
-		return "/fzbpage/platform/customer_tips/edit";
+		return "/hslgpage/platform/customer_tips/edit";
 	}
 
 	@RequestMapping(value = "/update")

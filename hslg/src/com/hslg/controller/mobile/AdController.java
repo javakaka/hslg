@@ -24,7 +24,7 @@ import com.hslg.service.AdService;
 public class AdController extends BaseController {
 	
 	private static Logger logger = Logger.getLogger(AdController.class); 
-	@Resource(name = "cxhlAdService")
+	@Resource(name = "hslgAdService")
 	private AdService adService;
 	
 	/**
@@ -40,8 +40,8 @@ public class AdController extends BaseController {
 	{
 		parseRequest(request);
 		logger.info("广告列表");
-		
-		DataSet adDataSet =adService.list();
+		String page =ivo.getString("page","1");
+		DataSet adDataSet =adService.list(page);
 		Setting setting =SettingUtils.get();
 		String siteUrl =setting.getSiteUrl();
 		String siteDomain ="";

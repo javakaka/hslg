@@ -11,8 +11,6 @@ import org.springframework.util.Assert;
 import com.ezcloud.framework.page.jdbc.Page;
 import com.ezcloud.framework.page.jdbc.Pageable;
 import com.ezcloud.framework.service.Service;
-import com.ezcloud.framework.util.AesUtil;
-import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.utility.DateUtil;
@@ -24,7 +22,7 @@ import com.ezcloud.utility.DateUtil;
  * 类说明: 收货地址
  */
 
-@Component("cxhlUserAddressService")
+@Component("hslgUserAddressService")
 public class UserAddressService extends Service{
 
 	public UserAddressService() {
@@ -37,7 +35,7 @@ public class UserAddressService extends Service{
 	{
 		Row row =null;
 		String sSql =" select a.*,b.`name` as province_name,c.`name` as city_name,d.`name` as region_name "
-				+" from cxhl_receive_address a "
+				+" from hslg_receive_address a "
 				+" left join common_province b on  a.province_id=b.id "
 				+" left join common_city c on a.city_id=c.id "
 				+" left join common_city_zone d on a.region_id=d.id "
@@ -50,7 +48,7 @@ public class UserAddressService extends Service{
 	public int findTotalNum()
 	{
 		int num =0;
-		String sSql =" select count(*) from cxhl_receive_address ";
+		String sSql =" select count(*) from hslg_receive_address ";
 		num =Integer.parseInt(queryField(sSql));
 		return num;
 	}
@@ -59,10 +57,10 @@ public class UserAddressService extends Service{
 	public int insert(Row row)
 	{
 		int num =0;
-		int id =getTableSequence("cxhl_receive_address", "id", 1);
+		int id =getTableSequence("hslg_receive_address", "id", 1);
 		row.put("id", id);
 		row.put("create_time", DateUtil.getCurrentDateTime());
-		num =insert("cxhl_receive_address", row);
+		num =insert("hslg_receive_address", row);
 		return num;
 	}
 	
@@ -73,7 +71,7 @@ public class UserAddressService extends Service{
 		String id =row.getString("id",null);
 		row.put("modify_time", DateUtil.getCurrentDateTime());
 		Assert.notNull(id);
-		num =update("cxhl_receive_address", row, " id='"+id+"'");
+		num =update("hslg_receive_address", row, " id='"+id+"'");
 		return num;
 	}
 	
@@ -81,8 +79,8 @@ public class UserAddressService extends Service{
 	public int updateUserDefaultAddressById(String id)
 	{
 		int num =0;
-		String sql =" update cxhl_receive_address set is_default='0' "
-				+ "where user_id in (select user_id from cxhl_receive_address where id='"+id+"') ";
+		String sql =" update hslg_receive_address set is_default='0' "
+				+ "where user_id in (select user_id from hslg_receive_address where id='"+id+"') ";
 		num =update(sql);
 		return num;
 	}
@@ -91,7 +89,7 @@ public class UserAddressService extends Service{
 	public int updateUserDefaultAddressByUserId(String user_id)
 	{
 		int num =0;
-		String sql =" update cxhl_receive_address set is_default='0' "
+		String sql =" update hslg_receive_address set is_default='0' "
 				+ "where user_id ='"+user_id+"'";
 		num =update(sql);
 		return num;
@@ -110,7 +108,7 @@ public class UserAddressService extends Service{
 		sql = "select * from ("
 		+" select a.*,b.telephone,b.`name` as username, "
 		+" cp.`name` as province_name,cc.`name` as city_name,ccz.`name` as region_name " 
-		+" from cxhl_receive_address a "
+		+" from hslg_receive_address a "
 		+" left join cxhl_users b on a.user_id=b.id "
 		+" left join common_province cp on a.province_id=cp.id "
 		+" left join common_city cc on a.city_id=cc.id "
@@ -123,7 +121,7 @@ public class UserAddressService extends Service{
 		String countSql ="select count(*) from ("
 				+" select a.*,b.telephone,b.`name` as username, "
 				+" cp.`name` as province_name,cc.`name` as city_name,ccz.`name` as region_name " 
-				+" from cxhl_receive_address a "
+				+" from hslg_receive_address a "
 				+" left join cxhl_users b on a.user_id=b.id "
 				+" left join common_province cp on a.province_id=cp.id "
 				+" left join common_city cc on a.city_id=cc.id "
@@ -149,7 +147,7 @@ public class UserAddressService extends Service{
 		DataSet ds =new DataSet();
 		int start =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
 		String sql ="select * " +
-				"from cxhl_receive_address " +
+				"from hslg_receive_address " +
 				"where user_id='"+user_id+"' limit "+start+","+page_size;
 		ds =queryDataSet(sql);
 		return ds;
@@ -172,24 +170,9 @@ public class UserAddressService extends Service{
 				}
 				id += "'" + String.valueOf(ids[i]) + "'";
 			}
-			sql = "delete from cxhl_receive_address where id in(" + id + ")";
+			sql = "delete from hslg_receive_address where id in(" + id + ")";
 			update(sql);
 		}
-	}
-	
-	
-	@Transactional(value="jdbcTransactionManager",readOnly = true)
-	public boolean isExtraEmailExisted(String id, String email)
-	{
-		boolean bool =true;
-		String sql ="select count(*) from cxhl_receive_address where email ='"+email+"' and id !='"+id+"'";
-		String count =queryField(sql);
-		int sum =Integer.parseInt(count);
-		if(sum >0)
-			bool =false;
-		else
-			bool =true;
-		return bool;
 	}
 	
 }

@@ -28,7 +28,7 @@ import com.hslg.service.UserAddressService;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformUserAddressController")
-@RequestMapping("/cxhlpage/platform/member/address")
+@RequestMapping("/hslgpage/platform/member/address")
 public class UserAddressContrller  extends BaseController{
 
 	@Resource(name = "cxhlUserService")
@@ -49,7 +49,7 @@ public class UserAddressContrller  extends BaseController{
 		Page page = userAddressService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/address/list";
+		return "/hslgpage/platform/member/address/list";
 	}
 	
 	/**
@@ -68,12 +68,12 @@ public class UserAddressContrller  extends BaseController{
 		}
 		model.addAttribute("id", id);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/address/SelectUser";
+		return "/hslgpage/platform/member/address/SelectUser";
 	}
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/member/address/add";
+		return "/hslgpage/platform/member/address/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -127,7 +127,7 @@ public class UserAddressContrller  extends BaseController{
 		Assert.notNull(id);
 		Row userRow =userService.find(String.valueOf(id));
 		model.addAttribute("row", userRow);
-		return "/cxhlpage/platform/member/address/edit";
+		return "/hslgpage/platform/member/address/edit";
 	}
 
 	@RequestMapping(value = "/update")

@@ -15,7 +15,7 @@ import com.ezcloud.utility.DateUtil;
  * @version 创建时间：2015-1-1 下午4:24:59  
  * 类说明:广告业务处理类 
  */
-@Component("cxhlAdService")
+@Component("hslgAdService")
 public class AdService extends Service {
 
 	public AdService() 
@@ -26,17 +26,17 @@ public class AdService extends Service {
 	public int insert(Row row) 
 	{
 		int rowNum =0;
-		int id =getTableSequence("cxhl_ad", "id", 1);
+		int id =getTableSequence("hslg_ad", "id", 1);
 		row.put("id", id);
 		row.put("create_time", DateUtil.getCurrentDateTime());
-		rowNum =insert("cxhl_ad", row);
+		rowNum =insert("hslg_ad", row);
 		return rowNum;
 	}
 	
 	public Row findById(String id)
 	{
 		Row row =null;
-		sql ="select * from cxhl_ad where id='"+id+"'";
+		sql ="select * from hslg_ad where id='"+id+"'";
 		row =queryRow(sql);
 		return row;
 	}
@@ -44,7 +44,7 @@ public class AdService extends Service {
 	public Row findByCode(String code)
 	{
 		Row row =null;
-		sql ="select * from cxhl_ad where code='"+code+"'";
+		sql ="select * from hslg_ad where code='"+code+"'";
 		row =queryRow(sql);
 		return row;
 	}
@@ -54,15 +54,15 @@ public class AdService extends Service {
 		int rowNum =0;
 		String id=row.getString("id");
 		row.put("modify_time", DateUtil.getCurrentDateTime());
-		update("cxhl_ad", row, " id='"+id+"'");
+		update("hslg_ad", row, " id='"+id+"'");
 		return rowNum;
 	}
 	
-	public DataSet list()
+	public DataSet list(String page)
 	{
 		DataSet ds =new DataSet();
 		String now_time =DateUtil.getCurrentDateTime();
-		sql ="select id,name,picture,width,height,position from cxhl_ad where status=1 and (start_time<='"+now_time+"' and end_time>='"+now_time+"')";
+		sql ="select id,name,picture,width,height from hslg_ad where status=1 and (start_time<='"+now_time+"' and end_time>='"+now_time+"') and page='"+page+"' ";
 		ds =queryDataSet(sql);
 		return ds;
 		
@@ -77,12 +77,12 @@ public class AdService extends Service {
 	 */
 	public Page queryPage(Pageable pageable) {
 		Page page = null;
-		sql ="select * from cxhl_ad  where 1=1 "; 
+		sql ="select * from hslg_ad  where 1=1 "; 
 		String restrictions = addRestrictions(pageable);
 		String orders = addOrders(pageable);
 		sql += restrictions;
 		sql += orders;
-		String countSql ="select count(*) from cxhl_ad  where 1=1 "; 
+		String countSql ="select count(*) from hslg_ad  where 1=1 "; 
 		countSql += restrictions;
 		countSql += orders;
 		long total = count(countSql);
@@ -100,7 +100,7 @@ public class AdService extends Service {
 	public boolean isAdNameExisted(String name)
 	{
 		boolean exist =false;
-		String sql ="select count(*) from cxhl_ad where name='"+name+"' ";
+		String sql ="select count(*) from hslg_ad where name='"+name+"' ";
 		String num =queryField(sql);
 		if(Integer.parseInt(num) >0)
 		{
@@ -112,7 +112,7 @@ public class AdService extends Service {
 	public boolean isAdNameExisted(String id,String name)
 	{
 		boolean exist =false;
-		String sql ="select count(*) from cxhl_ad where name='"+name+"' and id !='"+id+"'";
+		String sql ="select count(*) from hslg_ad where name='"+name+"' and id !='"+id+"'";
 		String num =queryField(sql);
 		if(Integer.parseInt(num) >0)
 		{
@@ -137,7 +137,7 @@ public class AdService extends Service {
 				}
 				id += "'" + String.valueOf(ids[i]) + "'";
 			}
-			sql = "delete from cxhl_ad where id in(" + id + ")";
+			sql = "delete from hslg_ad where id in(" + id + ")";
 			update(sql);
 		}
 	}

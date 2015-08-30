@@ -22,11 +22,11 @@ import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.Row;
 import com.hslg.service.AdService;
 
-@Controller("fzbPlatformAdController")
-@RequestMapping("/cxhlpage/platform/ad")
+@Controller("hslgPlatformAdController")
+@RequestMapping("/hslgpage/platform/ad/profile")
 public class AdContrller  extends BaseController{
 
-	@Resource(name = "cxhlAdService")
+	@Resource(name = "hslgAdService")
 	private AdService adService;
 	
 	/**
@@ -40,7 +40,7 @@ public class AdContrller  extends BaseController{
 		Page page = adService.queryPage(pageable);
 		model.addAttribute("page", page);
 		adService.getRow().clear();
-		return "/cxhlpage/platform/ad/list";
+		return "/hslgpage/platform/ad/profile/list";
 	}
 	
 	/**
@@ -80,15 +80,25 @@ public class AdContrller  extends BaseController{
 	
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/ad/add";
+		return "/hslgpage/platform/ad/profile/add";
 	}	
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String save(@RequestParam HashMap<String,String> map,RedirectAttributes redirectAttributes) {
 		Row row =MapUtils.convertMaptoRowWithoutNullField(map);
-//		String content =row.getString("content","");
-//		content =content.replaceAll("\"", "&quot;");
-//		row.put("content", content);
+		row.put("view_num", "0");
+		String start_time =row.getString("start_time","");
+		String end_time =row.getString("end_time","");
+		if(start_time.length()<=10)
+		{
+			start_time +=" 00:00:00";
+		}
+		if(end_time.length()<=10)
+		{
+			end_time +=" 00:00:00";
+		}
+		row.put("start_time", start_time);
+		row.put("end_time", end_time);
 		adService.insert(row);
 		addFlashMessage(redirectAttributes, Message.success("添加成功"));
 		return "redirect:list.do";
@@ -98,7 +108,7 @@ public class AdContrller  extends BaseController{
 	public String edit(String id, ModelMap model) {
 		Assert.notNull(id);
 		model.addAttribute("row", adService.findById(id));
-		return "/cxhlpage/platform/ad/edit";
+		return "/hslgpage/platform/ad/profile/edit";
 	}
 
 	@RequestMapping(value = "/update")
@@ -107,6 +117,18 @@ public class AdContrller  extends BaseController{
 //		String content =adRow.getString("content","");
 //		content =content.replaceAll("\"", "&quot;");
 //		adRow.put("content", content);
+		String start_time =adRow.getString("start_time","");
+		String end_time =adRow.getString("end_time","");
+		if(start_time.length()<=10)
+		{
+			start_time +=" 00:00:00";
+		}
+		if(end_time.length()<=10)
+		{
+			end_time +=" 00:00:00";
+		}
+		adRow.put("start_time", start_time);
+		adRow.put("end_time", end_time);
 		adService.update(adRow);
 		addFlashMessage(redirectAttributes,SUCCESS_MESSAGE);
 		return "redirect:list.do";

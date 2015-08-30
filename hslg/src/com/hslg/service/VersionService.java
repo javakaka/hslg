@@ -46,7 +46,11 @@ public class VersionService extends Service {
 	public Row findLastestVersion(String app,String device)
 	{
 		Row row =null;
-		sql ="select * from hslg_app_version where app_id='"+app+"' and device='"+device+"'";
+		sql ="select c.*,b.file_path from hslg_app_version c "
+		+" left join file_attach_control a on a.DEAL_CODE=c.id and a.DEAL_TYPE='hslg_app_file' and a.TYPE='app_file' and a.SUB_TYPE='app_file' "
+		+" left join file_attach_upload b on a.CONTROL_ID=b.CONTROL_ID "
+		+" where c.app_id='"+app+"' and c.device='"+device+"' "
+		+ " limit 0,1" ;
 		row =queryRow(sql);
 		return row;
 	}
@@ -79,29 +83,23 @@ public class VersionService extends Service {
 	@SuppressWarnings("unchecked")
 	public Page queryPage(String app_id,String device, Pageable pageable) {
 		Page page = null;
-		sql = "select * from "
+		String sql = "select * from "
 		+" ( "
 		+" select a.FILE_NAME,a.FILE_TYPE,a.DEAL_CODE,a.DEAL_TYPE,b.FILE_CODE,b.FILE_SIZE,b.FILE_PATH ,c.* "
 		+" from hslg_app_version c  "
-		+" left join file_attach_control a on a.DEAL_CODE=c.id "
+		+" left join file_attach_control a on a.DEAL_CODE=c.id and a.DEAL_TYPE='hslg_app_file' and a.TYPE='app_file' and a.SUB_TYPE='app_file' "
 		+" left join file_attach_upload b on a.CONTROL_ID=b.CONTROL_ID " 
-		+" and a.DEAL_TYPE='fangzubao_app_file'   "
-		+" and a.TYPE='app_file'  "
-		+" and a.SUB_TYPE='app_file' " 
 		+" ) as tab where 1=1  ";
 		String restrictions = addRestrictions(pageable);
 		String orders = addOrders(pageable);
 		sql += restrictions;
 		sql += orders;
-		String countSql ="select count(*) from "
+		String countSql = "select count(*) from "
 				+" ( "
 				+" select a.FILE_NAME,a.FILE_TYPE,a.DEAL_CODE,a.DEAL_TYPE,b.FILE_CODE,b.FILE_SIZE,b.FILE_PATH ,c.* "
 				+" from hslg_app_version c  "
-				+" left join file_attach_control a on a.DEAL_CODE=c.id "
+				+" left join file_attach_control a on a.DEAL_CODE=c.id and a.DEAL_TYPE='hslg_app_file' and a.TYPE='app_file' and a.SUB_TYPE='app_file' "
 				+" left join file_attach_upload b on a.CONTROL_ID=b.CONTROL_ID " 
-				+" and a.DEAL_TYPE='fangzubao_app_file'   "
-				+" and a.TYPE='app_file'  "
-				+" and a.SUB_TYPE='app_file' " 
 				+" ) as tab where 1=1  ";
 		countSql += restrictions;
 		countSql += orders;

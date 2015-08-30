@@ -18,10 +18,9 @@ import com.ezcloud.framework.vo.OVO;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.framework.vo.VOConvert;
 import com.ezcloud.utility.DateUtil;
+import com.hslg.service.GoodsService;
 import com.hslg.service.OrderItemService;
 import com.hslg.service.OrderService;
-import com.hslg.service.ShopCouponService;
-import com.hslg.service.UserCouponService;
 import com.hslg.service.UserService;
 /**
  * 订单
@@ -34,20 +33,17 @@ public class OrderController extends BaseController {
 	
 	private static Logger logger = Logger.getLogger(OrderController.class); 
 	
-	@Resource(name = "cxhlUserService")
+	@Resource(name = "hslgUserService")
 	private UserService userService;
 	
-	@Resource(name = "cxhlOrderService")
+	@Resource(name = "hslgOrderService")
 	private OrderService orderService;
 	
-	@Resource(name = "cxhlOrderItemService")
+	@Resource(name = "hslgOrderItemService")
 	private OrderItemService orderItemService;
 	
-	@Resource(name = "cxhlShopCouponService")
-	private ShopCouponService shopCouponService;
-	
-	@Resource(name = "cxhlUserCouponService")
-	private UserCouponService userCouponService;
+	@Resource(name = "hslgGoodsService")
+	private GoodsService goodsService;
 	
 	/**
 	 * 用户分页查询自己的订单，按创建时间倒序排列
@@ -101,10 +97,25 @@ public class OrderController extends BaseController {
 			ovo =new OVO(-1,"订单总价格不能为空","订单总价格不能为空");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
+		String address_id =ivo.getString("address_id","");
+		if(StringUtils.isEmptyOrNull(address_id))
+		{
+			ovo =new OVO(-1,"订单收货地址不能为空","订单收货地址不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		String transfer_fee =ivo.getString("transfer_fee","");
+		if(StringUtils.isEmptyOrNull(transfer_fee))
+		{
+			ovo =new OVO(-1,"订单运费不能为空，如果没有运费，则此字段的值为0","订单运费不能为空，如果没有运费，则此字段的值为0");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		String order_message =ivo.getString("order_message","");
+		if(StringUtils.isEmptyOrNull(order_message))
+		{
+			order_message ="";
+		}
 		//订单项目列表
 		DataSet item_list =(DataSet)ivo.get("items");
-		
-		
 		String error_msg =validateOrderItems(item_list);
 		if( !StringUtils.isEmptyOrNull(error_msg))
 		{
@@ -112,6 +123,8 @@ public class OrderController extends BaseController {
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		String validate_money =String.valueOf(calculateOrderMoney(item_list));
+		double order_money =Double.parseDouble(validate_money)+Double.parseDouble(transfer_fee);
+		validate_money =String.valueOf(order_money);
 		validate_money =NumberUtils.getTwoDecimal(validate_money);
 		money =NumberUtils.getTwoDecimal(money);
 		if( !money.equals(validate_money))
@@ -123,7 +136,10 @@ public class OrderController extends BaseController {
 		Row orderRow =new Row();
 		orderRow.put("user_id", user_id);
 		orderRow.put("money", money);
-		orderRow.put("state", "1");//1待支付2已支付
+		orderRow.put("state", "0");//0待付款，1已付款未到账，2已到账待收货，3已收货4申请退款5退款未到账，6已退款
+		orderRow.put("address_id", address_id);
+		orderRow.put("transfer_fee", transfer_fee);
+		orderRow.put("order_message", order_message);
 		String cur_time =DateUtil.getCurrentDateTime();
 		String order_no =cur_time.replace("-", "").replace(" ", "").replace(":", "");
 		int order_num =orderService.getOrderNumByCreateTime(cur_time);
@@ -139,26 +155,24 @@ public class OrderController extends BaseController {
 		orderRow.put("order_no", order_no);
 		orderService.insert(orderRow);
 		String order_id =orderRow.getString("id","");
-		//保存订单项到数据库以及用户的优惠券表
+		//保存订单项到数据库、减去库存
 		for(int i=0;i<item_list.size(); i++)
 		{
 			Row item =(Row)item_list.get(i);
+//			减去库存、增加已售数量
+			String goods_id =item.getString("goods_id");
+			String goods_num =item.getString("goods_num");
+			String updateSql ="update hslg_goods set left_num=left_num-"+goods_num+" , "
+					+ " total_num=total_num-"+goods_num+" , sale_num=sale_num+"+goods_num+" where id='"+goods_id+"'";
+			goodsService.update(updateSql);
+//			保存订单项到数据库
 			item.put("order_id", order_id);
 			orderItemService.insert(item);
-			
-			Row userCouponRow =new Row();
-			userCouponRow.put("user_id", user_id);
-			userCouponRow.put("coupon_id", item.getString("coupon_id"));
-			userCouponRow.put("price", item.getString("price"));
-			userCouponRow.put("num", item.getString("num"));
-			userCouponRow.put("state", "0");//0未支付1未使用2已使用3已过期
-			userCouponRow.put("channel", "2");//1刮奖获得2购买获得3赠送
-			userCouponService.insert(userCouponRow);
 		}
 		ovo =new OVO(0,"下单成功","下单成功");
 		ovo.set("order_no", order_no);
 		ovo.set("id", order_id);
-		
+		ovo.set("money", money);
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));
 	}
 	
@@ -209,33 +223,39 @@ public class OrderController extends BaseController {
 		for(int i=0;i<ds.size(); i++)
 		{
 			Row item =(Row)ds.get(i);
-			String coupon_id =item.getString("coupon_id","");
-			String price =item.getString("price","");
-			String num =item.getString("num","");
-			boolean bool =shopCouponService.isExisted(coupon_id);
-			if(! bool)
+			String price =item.getString("goods_price","");
+			String num =item.getString("goods_num","");
+			String goods_id =item.getString("goods_id","");
+			if(StringUtils.isEmptyOrNull(goods_id))
 			{
-				error_msg ="优惠券的编号不存在，请提交正确的订单数据";
+				error_msg ="商品的编号不能为空，请提交正确的订单数据";
 				break;
 			}
 			if(StringUtils.isEmptyOrNull(price))
 			{
-				error_msg ="优惠券的价格不能为空，请提交正确的订单数据";
+				error_msg ="商品的价格不能为空，请提交正确的订单数据";
 				break;
 			}
 			if(! NumberUtils.isNumber(price))
 			{
-				error_msg ="优惠券的价格应该是数字，请提交正确的订单数据";
+				error_msg ="商品的价格应该是数字，请提交正确的订单数据";
 				break;
 			}
 			if(StringUtils.isEmptyOrNull(num))
 			{
-				error_msg ="优惠券的数量不能为空，请提交正确的订单数据";
+				error_msg ="商品的数量不能为空，请提交正确的订单数据";
 				break;
 			}
 			if(! NumberUtils.isNumber(num))
 			{
-				error_msg ="优惠券的数量应该是数字，请提交正确的订单数据";
+				error_msg ="商品的数量应该是数字，请提交正确的订单数据";
+				break;
+			}
+			//检查商品库存是否足够
+			boolean bool =goodsService.isGoodsNumEnough(goods_id, num);
+			if(! bool)
+			{
+				error_msg ="商品库存数量不足，请提交正确的订单数据";
 				break;
 			}
 		}
@@ -247,17 +267,22 @@ public class OrderController extends BaseController {
 	 * @param ds
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public double calculateOrderMoney(DataSet ds)
 	{
 		double sum =0;
 		for(int i=0;i<ds.size(); i++)
 		{
+			double temp =0;
 			Row item =(Row)ds.get(i);
-			String price =item.getString("price","");
-			String num =item.getString("num","");
+			String price =item.getString("goods_price","");
+			String num =item.getString("goods_num","");
 			BigDecimal b_price =new BigDecimal(price);
 			BigDecimal b_num =new BigDecimal(num);
-			sum =b_price.multiply(b_num).doubleValue();
+			temp =b_price.multiply(b_num).doubleValue();
+			item.put("goods_money",temp);
+			ds.set(i, item);
+			sum +=temp;
 		}
 		return sum;
 	}

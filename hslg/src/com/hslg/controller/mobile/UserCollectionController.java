@@ -27,10 +27,10 @@ public class UserCollectionController extends BaseController {
 	
 	private static Logger logger = Logger.getLogger(UserCollectionController.class); 
 	
-	@Resource(name = "cxhlUserService")
+	@Resource(name = "hslgUserService")
 	private UserService userService;
 	
-	@Resource(name = "cxhlUserCollectionService")
+	@Resource(name = "hslgUserCollectionService")
 	private UserCollectionService userCollectionService;
 	
 	
@@ -70,10 +70,10 @@ public class UserCollectionController extends BaseController {
 			ovo =new OVO(-1,"用户编号不能为空","用户编号不能为空");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
-		String c_id =ivo.getString("shop_id","");
-		if(StringUtils.isEmptyOrNull(c_id))
+		String goods_id =ivo.getString("goods_id","");
+		if(StringUtils.isEmptyOrNull(goods_id))
 		{
-			ovo =new OVO(-1,"商家编号不能为空","商家编号不能为空");
+			ovo =new OVO(-1,"商品编号不能为空","商品编号不能为空");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		Row userRow =userService.find(user_id);
@@ -83,16 +83,15 @@ public class UserCollectionController extends BaseController {
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		
-		Row collection_row =userCollectionService.findByUserIdAndShopId(user_id,c_id);
+		Row collection_row =userCollectionService.find(user_id,goods_id);
 		if(collection_row != null)
 		{
-			ovo =new OVO(-10021,"用户已收藏此商家，不能重复收藏","用户已收藏此商家，不能重复收藏");
+			ovo =new OVO(-10021,"用户已收藏此商品，不能重复收藏","用户已收藏此商品，不能重复收藏");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		Row row =new Row();
 		row.put("user_id", user_id);
-		row.put("c_id", c_id);
-		row.put("c_type", "0");
+		row.put("goods_id", goods_id);
 		userCollectionService.insert(row);
 		ovo =new OVO(0,"操作成功","");
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));

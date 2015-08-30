@@ -32,7 +32,7 @@ import com.hslg.service.ShopTypeService;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformShopController")
-@RequestMapping("/cxhlpage/platform/shop/profile")
+@RequestMapping("/hslgpage/platform/shop/profile")
 public class ShopContrller  extends BaseController{
 
 	@Resource(name = "cxhlUserService")
@@ -69,7 +69,7 @@ public class ShopContrller  extends BaseController{
 		Page page = shopService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/shop/profile/list";
+		return "/hslgpage/platform/shop/profile/list";
 	}
 	
 
@@ -80,7 +80,7 @@ public class ShopContrller  extends BaseController{
 		//省份
 		model.addAttribute("province_list", zoneService.findAllProvince());
 		model.addAttribute("shop_type_list", shop_type_list);
-		return "/cxhlpage/platform/shop/profile/add";
+		return "/hslgpage/platform/shop/profile/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -174,7 +174,7 @@ public class ShopContrller  extends BaseController{
 			DataSet zone_list =zoneService.findZoneByCityId(city_id);
 			model.addAttribute("zone_list", zone_list);
 		}
-		return "/cxhlpage/platform/shop/profile/edit";
+		return "/hslgpage/platform/shop/profile/edit";
 	}
 
 	@RequestMapping(value = "/update")

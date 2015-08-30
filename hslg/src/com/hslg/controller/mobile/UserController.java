@@ -91,6 +91,7 @@ public class UserController extends BaseController {
 			String register_time=userRow.getString("register_time","");
 			String avatar =userRow.getString("avatar","");
 			String pay_password=userRow.getString("pay_password","");
+			String nickname=userRow.getString("nickname","");
 			ovo =new OVO(0, "登录成功", "");
 			ovo.set("id", id);
 			ovo.set("username", user_name);
@@ -98,6 +99,7 @@ public class UserController extends BaseController {
 			ovo.set("telephone", telephone);
 			ovo.set("register_time", register_time);
 			ovo.set("pay_password", pay_password);
+			ovo.set("nickname", nickname);
 			if(! StringUtils.isEmptyOrNull(avatar))
 			{
 				Setting setting =SettingUtils.get();
@@ -123,6 +125,8 @@ public class UserController extends BaseController {
 			tokenRow.put("user_id", id);
 			tokenRow.put("token", token);
 			ovo.set("token", token);
+			ovo.set("collection_num", "0");
+			ovo.set("score", "0");
 			userTokenService.update(tokenRow);
 		}
 		else
@@ -147,9 +151,15 @@ public class UserController extends BaseController {
 		String user_id =ivo.getString("user_id",null);
 		String oldPwd =ivo.getString("oldPwd",null);
 		String newPwd =ivo.getString("newPwd",null);
+		String sms_code =ivo.getString("sms_code",null);
+		String telephone =ivo.getString("telephone",null);
 		
 		if(user_id == null || user_id.replace(" ", "").length() ==0){
 			ovo =new OVO(-10005,"用户编号不能为空","用户编号不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		if(telephone == null || telephone.replace(" ", "").length() ==0){
+			ovo =new OVO(-10005,"手机号码不能为空","手机号码不能为空");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		if(oldPwd == null || oldPwd.replace(" ", "").length() ==0){
@@ -163,6 +173,17 @@ public class UserController extends BaseController {
 		if(oldPwd.equals(newPwd))
 		{
 			ovo =new OVO(-10008,"新密码不能和旧密码相同","新密码不能和旧密码相同");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		if(sms_code == null || sms_code.replace(" ", "").length() ==0){
+			ovo =new OVO(-10006,"短信验证码不能为空","短信验证码不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		//短信验证码是否存在
+		boolean codeExsited =smsService.findByCodeAndTelphone(sms_code, telephone,2);
+		if(! codeExsited)
+		{
+			ovo =new OVO(-10010,"短信验证码错误或已过期","短信验证码错误或已过期");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		int status =userService.changePassword(user_id, oldPwd, newPwd);
@@ -206,19 +227,21 @@ public class UserController extends BaseController {
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		String username =ivo.getString("username",null);
-		if(!StringUtils.isEmptyOrNull(username))
+		if(StringUtils.isEmptyOrNull(username))
 		{
-			//检查用户名是否已经存在
-			Row usernameRow =userService.findByUserName(username);
-			if(usernameRow != null)
-			{
-				ovo =new OVO(-10010,"用户名已经存在","用户名已经存在");
-				return AesUtil.encode(VOConvert.ovoToJson(ovo));
-			}
-			else
-			{
-				insertRow.put("username", username);
-			}
+			ovo =new OVO(-10010,"用户名不能为空","用户名不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		//检查用户名是否已经存在
+		Row usernameRow =userService.findByUserName(username);
+		if(usernameRow != null)
+		{
+			ovo =new OVO(-10010,"用户名已经存在","用户名已经存在");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		else
+		{
+			insertRow.put("username", username);
 		}
 		if(! StringUtils.isTelphone(telephone))
 		{
@@ -366,6 +389,7 @@ public class UserController extends BaseController {
 		String register_time=userRow.getString("register_time","");
 		String sex=userRow.getString("sex","");
 		String pay_password=userRow.getString("pay_password","");
+		String nickname=userRow.getString("nickname","");
 		String avatar =userRow.getString("avatar","");
 		if(! StringUtils.isEmptyOrNull(avatar))
 		{
@@ -381,6 +405,9 @@ public class UserController extends BaseController {
 		ovo.set("register_time", register_time);
 		ovo.set("pay_password", pay_password);
 		ovo.set("avatar", avatar);
+		ovo.set("nickname", nickname);
+		ovo.set("collection_num", "0");
+		ovo.set("score", "0");
 		Row tokenRow =userTokenService.find(id);
 		String token ="";
 		if(tokenRow != null)
@@ -415,7 +442,6 @@ public class UserController extends BaseController {
 			ovo =new OVO(-10010,"用户不存在","用户不存在");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
-//		String old_id_card_no =userRow.getString("id_card_no",null);
 		userRow =new Row();
 		userRow.put("id", id);
 		String name =ivo.getString("name",null);
@@ -424,52 +450,18 @@ public class UserController extends BaseController {
 			userRow.put("name", name);
 		}
 		//验证唯一性
-		String email =ivo.getString("email",null);
-		boolean email_existed=false;
-		if(!StringUtils.isEmptyOrNull(email))
+		String nickname =ivo.getString("nickname",null);
+		boolean nickname_existed=false;
+		if(!StringUtils.isEmptyOrNull(nickname))
 		{
-			email_existed =userService.isEmailExisted(id,email);
-			if(email_existed)
+			nickname_existed =userService.isNicknameExisted(id,nickname);
+			if(nickname_existed)
 			{
-				ovo =new OVO(-10010,"此邮箱已被其他用户绑定，请使用其他邮箱","此邮箱已被其他用户绑定，请使用其他邮箱");
+				ovo =new OVO(-10010,"此昵称已存在，请使用其他昵称","");
 				return AesUtil.encode(VOConvert.ovoToJson(ovo));
 			}
-			userRow.put("email", email);
+			userRow.put("nickname", nickname);
 		}
-		//验证唯一性
-		String username =ivo.getString("username",null);
-		boolean username_existed=false;
-		if(!StringUtils.isEmptyOrNull(username))
-		{
-			username_existed =userService.isUsernameExisted(id,username);
-			if(username_existed)
-			{
-				ovo =new OVO(-10010,"此用户名已存在，请使用其他用户名","");
-				return AesUtil.encode(VOConvert.ovoToJson(ovo));
-			}
-			userRow.put("username", username);
-		}
-		String address =ivo.getString("address",null);
-		if(!StringUtils.isEmptyOrNull(address))
-		{
-			userRow.put("address", address);
-		}
-//		//身份证号码
-//		String id_card_no =ivo.getString("id_card_no",null);
-//		if(!StringUtils.isEmptyOrNull(id_card_no))
-//		{
-//			//检验身份证号码是否合法
-//			
-//			//检验身份证号码是否已经存在
-////			old_id_card_no
-//			boolean boolCardNo =userService.isIdCardNoIsExisted(id, id_card_no);
-//			if(boolCardNo)
-//			{
-//				ovo =new OVO(-10010,"此身份证号码已被其他用户绑定","此身份证号码已被其他用户绑定");
-//				return AesUtil.encode(VOConvert.ovoToJson(ovo));
-//			}
-//			userRow.put("id_card_no", id_card_no);
-//		}
 		int rowNum =userService.update(userRow);
 		if(rowNum ==0)
 		{

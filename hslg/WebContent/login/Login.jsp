@@ -33,7 +33,7 @@ else
 				<table>
 					<tr>
 						<td width="190" rowspan="2" align="center" valign="bottom">
-							<img src="<%=basePath%>/res/images/login_logo.gif" alt="WUP" />
+							<img src="<%=basePath%>/res/images/login_logo_default.gif" alt="WUP" />
 						</td>
 						<th>
 							用户名:
@@ -90,7 +90,7 @@ else
 						</td>
 					</tr>
 				</table>
-				<div class="powered">COPYRIGHT © 2015-2020 烽火连三月营销策划有限公司 ALL RIGHTS RESERVED.</div>
+				<div class="powered">COPYRIGHT © 2015-2020 梅州市善购网络传媒有限公司 ALL RIGHTS RESERVED.</div>
 				<div class="link">
 					<a href="#"></a>
 					<a href="#"></a>

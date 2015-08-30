@@ -49,7 +49,6 @@ public class UserTokenService extends Service{
 		int num =0;
 		String id =row.getString("user_id",null);
 		Assert.notNull(id);
-		System.out.print("user====>>"+row);
 		String sql ="delete from hslg_users_token where user_id='"+id+"'";
 		update(sql);
 		num =insert("hslg_users_token", row);

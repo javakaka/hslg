@@ -28,7 +28,7 @@ import com.ezcloud.utility.StringUtil;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformShopAdminController")
-@RequestMapping("/cxhlpage/platform/shopadmin/profile")
+@RequestMapping("/hslgpage/platform/shopadmin/profile")
 public class ShopAdminController  extends BaseController{
 
 	@Resource(name = "cxhlUserService")
@@ -47,7 +47,7 @@ public class ShopAdminController  extends BaseController{
 		Page page = userService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/profile/list";
+		return "/hslgpage/platform/member/profile/list";
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class ShopAdminController  extends BaseController{
 		DataSet data = userService.queryLatestTop5Users();
 		model.addAttribute("data", data);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/webpart/LatestUserList";
+		return "/hslgpage/platform/webpart/LatestUserList";
 	}
 	
 	/**
@@ -82,12 +82,12 @@ public class ShopAdminController  extends BaseController{
 		}
 		model.addAttribute("id", id);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/profile/SelectUser";
+		return "/hslgpage/platform/member/profile/SelectUser";
 	}
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/member/profile/add";
+		return "/hslgpage/platform/member/profile/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -141,7 +141,7 @@ public class ShopAdminController  extends BaseController{
 		Assert.notNull(id);
 		Row userRow =userService.find(String.valueOf(id));
 		model.addAttribute("row", userRow);
-		return "/cxhlpage/platform/member/profile/edit";
+		return "/hslgpage/platform/member/profile/edit";
 	}
 
 	@RequestMapping(value = "/update")

@@ -15,8 +15,8 @@ import com.ezcloud.framework.util.Message;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
 
-@Controller("fzbPlatformPayController")
-@RequestMapping("/fzbpage/platform/pay")
+@Controller("hslgPlatformPayController")
+@RequestMapping("/hslgpage/platform/pay")
 public class PayContrller  extends BaseController{
 
 	@Resource(name = "frameworkSystemConfigService")
@@ -51,7 +51,7 @@ public class PayContrller  extends BaseController{
 		model.addAttribute("bank_no", bank_no);
 		model.addAttribute("bank_type", bank_type);
 		model.addAttribute("busi_type", "APP_COMPANY_BANK_ACCOUNT");
-		return "/fzbpage/platform/pay_setting/PaySetting";
+		return "/hslgpage/platform/pay_setting/PaySetting";
 	}
 	
 	

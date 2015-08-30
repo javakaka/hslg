@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ezcloud.framework.controller.BaseController;
 import com.ezcloud.framework.page.jdbc.Page;
 import com.ezcloud.framework.page.jdbc.Pageable;
-import com.ezcloud.framework.util.AesUtil;
 import com.ezcloud.framework.util.MapUtils;
 import com.ezcloud.framework.util.Md5Util;
 import com.ezcloud.framework.util.Message;
@@ -28,10 +27,10 @@ import com.ezcloud.utility.StringUtil;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformUserController")
-@RequestMapping("/cxhlpage/platform/member/profile")
+@RequestMapping("/hslgpage/platform/member/profile")
 public class UserContrller  extends BaseController{
 
-	@Resource(name = "cxhlUserService")
+	@Resource(name = "hslgUserService")
 	private UserService userService;
 	
 	
@@ -47,7 +46,7 @@ public class UserContrller  extends BaseController{
 		Page page = userService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/profile/list";
+		return "/hslgpage/platform/member/profile/list";
 	}
 	
 	/**
@@ -62,7 +61,7 @@ public class UserContrller  extends BaseController{
 		DataSet data = userService.queryLatestTop5Users();
 		model.addAttribute("data", data);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/webpart/LatestUserList";
+		return "/hslgpage/platform/webpart/LatestUserList";
 	}
 	
 	/**
@@ -82,12 +81,12 @@ public class UserContrller  extends BaseController{
 		}
 		model.addAttribute("id", id);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/profile/SelectUser";
+		return "/hslgpage/platform/member/profile/SelectUser";
 	}
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/member/profile/add";
+		return "/hslgpage/platform/member/profile/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -141,7 +140,7 @@ public class UserContrller  extends BaseController{
 		Assert.notNull(id);
 		Row userRow =userService.find(String.valueOf(id));
 		model.addAttribute("row", userRow);
-		return "/cxhlpage/platform/member/profile/edit";
+		return "/hslgpage/platform/member/profile/edit";
 	}
 
 	@RequestMapping(value = "/update")

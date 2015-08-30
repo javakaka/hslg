@@ -28,7 +28,7 @@ import com.hslg.service.UserCouponService;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformUserCouponController")
-@RequestMapping("/cxhlpage/platform/member/coupon")
+@RequestMapping("/hslgpage/platform/member/coupon")
 public class UserCouponContrller  extends BaseController{
 
 	@Resource(name = "cxhlUserService")
@@ -52,7 +52,7 @@ public class UserCouponContrller  extends BaseController{
 		Page page = userCouponService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/coupon/list";
+		return "/hslgpage/platform/member/coupon/list";
 	}
 	
 	/**
@@ -71,12 +71,12 @@ public class UserCouponContrller  extends BaseController{
 		}
 		model.addAttribute("id", id);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/coupon/SelectUser";
+		return "/hslgpage/platform/member/coupon/SelectUser";
 	}
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/member/coupon/add";
+		return "/hslgpage/platform/member/coupon/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -130,7 +130,7 @@ public class UserCouponContrller  extends BaseController{
 		Assert.notNull(id);
 		Row userRow =userService.find(String.valueOf(id));
 		model.addAttribute("row", userRow);
-		return "/cxhlpage/platform/member/coupon/edit";
+		return "/hslgpage/platform/member/coupon/edit";
 	}
 
 	@RequestMapping(value = "/update")

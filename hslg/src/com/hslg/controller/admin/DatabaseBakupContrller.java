@@ -16,8 +16,8 @@ import com.ezcloud.framework.util.MysqlBackUpUtils;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
 
-@Controller("fzbPlatformDatabaseBackUpController")
-@RequestMapping("/fzbpage/platform/backup")
+@Controller("hslgPlatformDatabaseBackUpController")
+@RequestMapping("/hslgpage/platform/backup")
 public class DatabaseBakupContrller  extends BaseController{
 
 	@Resource(name = "frameworkSystemConfigService")
@@ -70,7 +70,7 @@ public class DatabaseBakupContrller  extends BaseController{
 		model.addAttribute("username", username);
 		model.addAttribute("password", password);
 		model.addAttribute("busi_type", "DB_BACKUP");
-		return "/fzbpage/platform/backup/DatabaseBakSetting";
+		return "/hslgpage/platform/backup/DatabaseBakSetting";
 	}
 	
 	

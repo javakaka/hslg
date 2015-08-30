@@ -25,7 +25,7 @@ import com.hslg.service.ShopTypeService;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformShopCategoryController")
-@RequestMapping("/cxhlpage/platform/shop/category")
+@RequestMapping("/hslgpage/platform/shop/category")
 public class ShopCategoryContrller  extends BaseController{
 
 	@Resource(name = "cxhlUserService")
@@ -46,13 +46,13 @@ public class ShopCategoryContrller  extends BaseController{
 		Page page = shopTypeService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/shop/category/list";
+		return "/hslgpage/platform/shop/category/list";
 	}
 	
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/shop/category/add";
+		return "/hslgpage/platform/shop/category/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -79,7 +79,7 @@ public class ShopCategoryContrller  extends BaseController{
 		Assert.notNull(id);
 		Row row =shopTypeService.find(String.valueOf(id));
 		model.addAttribute("row", row);
-		return "/cxhlpage/platform/shop/category/edit";
+		return "/hslgpage/platform/shop/category/edit";
 	}
 
 	@RequestMapping(value = "/update")

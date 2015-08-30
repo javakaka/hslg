@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.util.AesUtil;
+import com.ezcloud.framework.util.SettingUtils;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.OVO;
 import com.ezcloud.framework.vo.Row;
@@ -54,9 +56,20 @@ public class VersionController extends BaseController {
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		String version =versionRow.getString("version","0");
-		String url =versionRow.getString("url","");
+		String url =versionRow.getString("file_path","");
 		String remark =versionRow.getString("remark","");
 		String size =versionRow.getString("size","");
+		if(! StringUtils.isEmptyOrNull(url))
+		{
+			Setting setting =SettingUtils.get();
+			String webSite =setting.getSiteUrl();
+			int iPos =url.indexOf("resources");
+			if(iPos != -1)
+			{
+				String tmpUrl =url.substring(iPos);
+				url =webSite +"/"+tmpUrl;
+			}
+		}
 		ovo =new OVO(0,"","");
 		ovo.set("version",version );
 		ovo.set("url", url);

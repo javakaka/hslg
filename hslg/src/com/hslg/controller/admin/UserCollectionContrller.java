@@ -27,7 +27,7 @@ import com.hslg.service.UserCollectionService;
 import com.hslg.service.UserService;
 
 @Controller("cxhlPlatformUserCollectionController")
-@RequestMapping("/cxhlpage/platform/member/collection")
+@RequestMapping("/hslgpage/platform/member/collection")
 public class UserCollectionContrller  extends BaseController{
 
 	@Resource(name = "cxhlUserService")
@@ -48,7 +48,7 @@ public class UserCollectionContrller  extends BaseController{
 		Page page = userCollectionService.queryPage();
 		model.addAttribute("page", page);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/collection/list";
+		return "/hslgpage/platform/member/collection/list";
 	}
 	
 	/**
@@ -67,12 +67,12 @@ public class UserCollectionContrller  extends BaseController{
 		}
 		model.addAttribute("id", id);
 		userService.getRow().clear();
-		return "/cxhlpage/platform/member/collection/SelectUser";
+		return "/hslgpage/platform/member/collection/SelectUser";
 	}
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/cxhlpage/platform/member/collection/add";
+		return "/hslgpage/platform/member/collection/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -126,7 +126,7 @@ public class UserCollectionContrller  extends BaseController{
 		Assert.notNull(id);
 		Row userRow =userService.find(String.valueOf(id));
 		model.addAttribute("row", userRow);
-		return "/cxhlpage/platform/member/collection/edit";
+		return "/hslgpage/platform/member/collection/edit";
 	}
 
 	@RequestMapping(value = "/update")

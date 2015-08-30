@@ -91,7 +91,7 @@ $().ready(function() {
 							<img src="<%=basePath%>/res/images/login_logo_agent.gif" alt="Logo" />
 						</c:when>
 						<c:otherwise>
-							<img src="<%=basePath%>/res/images/login_logo.gif" alt="Logo" />
+							<img src="<%=basePath%>/res/images/login_logo_default.gif" alt="Logo" />
 						</c:otherwise>
 					</c:choose>
 				</a>

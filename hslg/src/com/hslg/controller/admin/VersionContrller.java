@@ -30,11 +30,11 @@ import com.ezcloud.framework.vo.Row;
 import com.ezcloud.utility.FileUtil;
 import com.hslg.service.VersionService;
 
-@Controller("fzbPlatformVersionController")
-@RequestMapping("/fzbpage/platform/version")
+@Controller("hslgPlatformVersionController")
+@RequestMapping("/hslgpage/platform/version")
 public class VersionContrller  extends BaseController{
 
-	@Resource(name = "fzbVersionService")
+	@Resource(name = "hslgVersionService")
 	private VersionService versionService;
 	
 	@Resource(name = "frameworkUploadService")
@@ -46,14 +46,14 @@ public class VersionContrller  extends BaseController{
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/VersionList")
+	@RequestMapping(value = "/list")
 	public String list(String app_id,String device,Pageable pageable, ModelMap model) {
 		Page page = versionService.queryPage(app_id,device,pageable);
 		model.addAttribute("page", page);
 		model.addAttribute("app_id", app_id);
 		model.addAttribute("device", device);
 		versionService.getRow().clear();
-		return "/fzbpage/platform/version/VersionList";
+		return "/hslgpage/platform/version/VersionList";
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class VersionContrller  extends BaseController{
 	
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/fzbpage/platform/version/add";
+		return "/hslgpage/platform/version/add";
 	}	
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -113,7 +113,7 @@ public class VersionContrller  extends BaseController{
 	public String edit(String id, ModelMap model) {
 		Assert.notNull(id);
 		model.addAttribute("row", versionService.findById(id));
-		return "/fzbpage/platform/version/edit";
+		return "/hslgpage/platform/version/edit";
 	}
 	
 	@RequestMapping(value = "/edit_version")
@@ -121,7 +121,7 @@ public class VersionContrller  extends BaseController{
 		Assert.notNull(id);
 //		model.addAttribute("row", versionService.findById(id));
 		model.addAttribute("id", id);
-		return "/fzbpage/platform/version/EditVersion";
+		return "/hslgpage/platform/version/EditVersion";
 	}
 
 	@RequestMapping(value = "/update")

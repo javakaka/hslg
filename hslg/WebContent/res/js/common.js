@@ -1,13 +1,13 @@
 var framework = {
-	base: "/cxhl",
+	base: "/hslg",
 	locale: "zh_CN"
 };
 
 var setting = {
 	priceScale: "2",
 	priceRoundType: "roundHalfUp",
-	currencySign: "£¤",
-	currencyUnit: "Ôª",
+	currencySign: "ï¿¥",
+	currencyUnit: "å…ƒ",
 	uploadImageExtension: "jpg,jpeg,bmp,gif,png",
 	uploadFlashExtension: "swf,flv",
 	uploadMediaExtension: "swf,flv,mp3,wav,avi,rm,rmvb",
@@ -15,49 +15,49 @@ var setting = {
 };
 
 var messages = {
-	"admin.message.success": "²Ù×÷³É¹¦",
-	"admin.message.error": "²Ù×÷´íÎó",
-	"admin.dialog.ok": "È·&nbsp;&nbsp;¶¨",
-	"admin.dialog.cancel": "È¡&nbsp;&nbsp;Ïû",
-	"admin.dialog.deleteConfirm": "ÄúÈ·¶¨ÒªÉ¾³ıÂğ£¿",
-	"admin.dialog.clearConfirm": "ÄúÈ·¶¨ÒªÇå¿ÕÂğ£¿",
-	"admin.browser.title": "Ñ¡ÔñÎÄ¼ş",
-	"admin.browser.upload": "±¾µØÉÏ´«",
-	"admin.browser.parent": "ÉÏ¼¶Ä¿Â¼",
-	"admin.browser.orderType": "ÅÅĞò·½Ê½",
-	"admin.browser.name": "Ãû³Æ",
-	"admin.browser.size": "´óĞ¡",
-	"admin.browser.type": "ÀàĞÍ",
-	"admin.browser.select": "Ñ¡ÔñÎÄ¼ş",
-	"admin.upload.sizeInvalid": "ÉÏ´«ÎÄ¼ş´óĞ¡³¬³öÏŞÖÆ",
-	"admin.upload.typeInvalid": "ÉÏ´«ÎÄ¼ş¸ñÊ½²»ÕıÈ·",
-	"admin.upload.invalid": "ÉÏ´«ÎÄ¼ş¸ñÊ½»ò´óĞ¡²»ÕıÈ·",
-	"admin.validate.required": "±ØÌî",
-	"admin.validate.email": "E-mail¸ñÊ½´íÎó",
-	"admin.validate.url": "ÍøÖ·¸ñÊ½´íÎó",
-	"admin.validate.date": "ÈÕÆÚ¸ñÊ½´íÎó",
-	"admin.validate.dateISO": "ÈÕÆÚ¸ñÊ½´íÎó",
-	"admin.validate.pointcard": "ĞÅÓÃ¿¨¸ñÊ½´íÎó",
-	"admin.validate.number": "Ö»ÔÊĞíÊäÈëÊı×Ö",
-	"admin.validate.digits": "Ö»ÔÊĞíÊäÈëÁã»òÕıÕûÊı",
-	"admin.validate.minlength": "³¤¶È²»ÔÊĞíĞ¡ÓÚ{0}",
-	"admin.validate.maxlength": "³¤¶È²»ÔÊĞí´óÓÚ{0}",
-	"admin.validate.rangelength": "³¤¶È±ØĞëÔÚ{0}-{1}Ö®¼ä",
-	"admin.validate.min": "²»ÔÊĞíĞ¡ÓÚ{0}",
-	"admin.validate.max": "²»ÔÊĞí´óÓÚ{0}",
-	"admin.validate.range": "±ØĞëÔÚ{0}-{1}Ö®¼ä",
-	"admin.validate.accept": "ÊäÈëºó×º´íÎó",
-	"admin.validate.equalTo": "Á½´ÎÊäÈë²»Ò»ÖÂ",
-	"admin.validate.remote": "ÊäÈë´íÎó",
-	"admin.validate.integer": "Ö»ÔÊĞíÊäÈëÕûÊı",
-	"admin.validate.positive": "Ö»ÔÊĞíÊäÈëÕıÊı",
-	"admin.validate.negative": "Ö»ÔÊĞíÊäÈë¸ºÊı",
-	"admin.validate.decimal": "ÊıÖµ³¬³öÁËÔÊĞí·¶Î§",
-	"admin.validate.pattern": "¸ñÊ½´íÎó",
-	"admin.validate.extension": "ÎÄ¼ş¸ñÊ½´íÎó"
+	"admin.message.success": "æ“ä½œæˆåŠŸ",
+	"admin.message.error": "æ“ä½œé”™è¯¯",
+	"admin.dialog.ok": "ç¡®&nbsp;&nbsp;å®š",
+	"admin.dialog.cancel": "å–&nbsp;&nbsp;æ¶ˆ",
+	"admin.dialog.deleteConfirm": "æ‚¨ç¡®å®šè¦åˆ é™¤å—ï¼Ÿ",
+	"admin.dialog.clearConfirm": "æ‚¨ç¡®å®šè¦æ¸…ç©ºå—ï¼Ÿ",
+	"admin.browser.title": "é€‰æ‹©æ–‡ä»¶",
+	"admin.browser.upload": "æœ¬åœ°ä¸Šä¼ ",
+	"admin.browser.parent": "ä¸Šçº§ç›®å½•",
+	"admin.browser.orderType": "æ’åºæ–¹å¼",
+	"admin.browser.name": "åç§°",
+	"admin.browser.size": "å¤§å°",
+	"admin.browser.type": "ç±»å‹",
+	"admin.browser.select": "é€‰æ‹©æ–‡ä»¶",
+	"admin.upload.sizeInvalid": "ä¸Šä¼ æ–‡ä»¶å¤§å°è¶…å‡ºé™åˆ¶",
+	"admin.upload.typeInvalid": "ä¸Šä¼ æ–‡ä»¶æ ¼å¼ä¸æ­£ç¡®",
+	"admin.upload.invalid": "ä¸Šä¼ æ–‡ä»¶æ ¼å¼æˆ–å¤§å°ä¸æ­£ç¡®",
+	"admin.validate.required": "å¿…å¡«",
+	"admin.validate.email": "E-mailæ ¼å¼é”™è¯¯",
+	"admin.validate.url": "ç½‘å€æ ¼å¼é”™è¯¯",
+	"admin.validate.date": "æ—¥æœŸæ ¼å¼é”™è¯¯",
+	"admin.validate.dateISO": "æ—¥æœŸæ ¼å¼é”™è¯¯",
+	"admin.validate.pointcard": "ä¿¡ç”¨å¡æ ¼å¼é”™è¯¯",
+	"admin.validate.number": "åªå…è®¸è¾“å…¥æ•°å­—",
+	"admin.validate.digits": "åªå…è®¸è¾“å…¥é›¶æˆ–æ­£æ•´æ•°",
+	"admin.validate.minlength": "é•¿åº¦ä¸å…è®¸å°äº{0}",
+	"admin.validate.maxlength": "é•¿åº¦ä¸å…è®¸å¤§äº{0}",
+	"admin.validate.rangelength": "é•¿åº¦å¿…é¡»åœ¨{0}-{1}ä¹‹é—´",
+	"admin.validate.min": "ä¸å…è®¸å°äº{0}",
+	"admin.validate.max": "ä¸å…è®¸å¤§äº{0}",
+	"admin.validate.range": "å¿…é¡»åœ¨{0}-{1}ä¹‹é—´",
+	"admin.validate.accept": "è¾“å…¥åç¼€é”™è¯¯",
+	"admin.validate.equalTo": "ä¸¤æ¬¡è¾“å…¥ä¸ä¸€è‡´",
+	"admin.validate.remote": "è¾“å…¥é”™è¯¯",
+	"admin.validate.integer": "åªå…è®¸è¾“å…¥æ•´æ•°",
+	"admin.validate.positive": "åªå…è®¸è¾“å…¥æ­£æ•°",
+	"admin.validate.negative": "åªå…è®¸è¾“å…¥è´Ÿæ•°",
+	"admin.validate.decimal": "æ•°å€¼è¶…å‡ºäº†å…è®¸èŒƒå›´",
+	"admin.validate.pattern": "æ ¼å¼é”™è¯¯",
+	"admin.validate.extension": "æ–‡ä»¶æ ¼å¼é”™è¯¯"
 };
 
-// Ìí¼ÓCookie
+// æ·»åŠ Cookie
 function addCookie(name, value, options) {
 	if (arguments.length > 1 && name != null) {
 		if (options == null) {
@@ -75,7 +75,7 @@ function addCookie(name, value, options) {
 	}
 }
 
-// »ñÈ¡Cookie
+// è·å–Cookie
 function getCookie(name) {
 	if (name != null) {
 		var value = new RegExp("(?:^|; )" + encodeURIComponent(String(name)) + "=([^;]*)").exec(document.cookie);
@@ -83,14 +83,14 @@ function getCookie(name) {
 	}
 }
 
-// ÒÆ³ıCookie
+// ç§»é™¤Cookie
 function removeCookie(name, options) {
 	addCookie(name, null, options);
 }
 
 
 
-// ¶àÓïÑÔ
+// å¤šè¯­è¨€
 function message(code) {
 	if (code != null) {
 		var content = messages[code] != null ? messages[code] : code;
@@ -116,7 +116,7 @@ function message(code) {
 
 	var zIndex = 100;
 	
-	// ÏûÏ¢¿ò
+	// æ¶ˆæ¯æ¡†
 	var $message;
 	var messageTimer;
 	$.message = function() {
@@ -152,7 +152,7 @@ function message(code) {
 		return $message;
 	}
 
-	// ¶Ô»°¿ò
+	// å¯¹è¯æ¡†
 	$.dialog = function(options) {
 		var settings = {
 			width: 320,

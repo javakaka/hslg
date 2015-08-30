@@ -23,8 +23,8 @@ import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.Row;
 import com.hslg.service.RenterMonthlyMoneyService;
 
-@Controller("fzbPlatformPayRecordController")
-@RequestMapping("/fzbpage/platform/pay_record")
+@Controller("hslgPlatformPayRecordController")
+@RequestMapping("/hslgpage/platform/pay_record")
 /**
  * 租客交租记录
  * @author Administrator
@@ -46,12 +46,12 @@ public class PayRecordContrller  extends BaseController{
 		Page page = renterMonthlyMoneyService.queryPage(pay_status,pageable);
 		model.addAttribute("page", page);
 		model.addAttribute("pay_status", pay_status);
-		return "/fzbpage/platform/pay_record/PayList";
+		return "/hslgpage/platform/pay_record/PayList";
 	}
 
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/fzbpage/platform/pay_record/add";
+		return "/hslgpage/platform/pay_record/add";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -76,7 +76,7 @@ public class PayRecordContrller  extends BaseController{
 			row.put("landlord_name", landlord_name);
 		}
 		model.addAttribute("row",row );
-		return "/fzbpage/platform/pay_record/edit";
+		return "/hslgpage/platform/pay_record/edit";
 	}
 
 	@RequestMapping(value = "/update")

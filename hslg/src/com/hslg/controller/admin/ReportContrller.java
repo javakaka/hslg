@@ -12,8 +12,8 @@ import com.hslg.service.AgentService;
 import com.hslg.service.RoomService;
 import com.hslg.service.UserService;
 
-@Controller("fzbPlatformReportController")
-@RequestMapping("/fzbpage/platform/report")
+@Controller("hslgPlatformReportController")
+@RequestMapping("/hslgpage/platform/report")
 public class ReportContrller  extends BaseController{
 
 	@Resource(name = "fzbUserService")
@@ -42,7 +42,7 @@ public class ReportContrller  extends BaseController{
 		model.addAttribute("agentTotal", agentTotal);
 		model.addAttribute("userTotal", userTotal);
 		model.addAttribute("roomTotal", roomTotal);
-		return "/fzbpage/platform/webpart/SummaryReport";
+		return "/hslgpage/platform/webpart/SummaryReport";
 	}
 
 	

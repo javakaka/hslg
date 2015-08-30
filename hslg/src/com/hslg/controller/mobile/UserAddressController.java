@@ -27,10 +27,10 @@ public class UserAddressController extends BaseController {
 	
 	private static Logger logger = Logger.getLogger(UserAddressController.class); 
 	
-	@Resource(name = "cxhlUserService")
+	@Resource(name = "hslgUserService")
 	private UserService userService;
 	
-	@Resource(name = "cxhlUserAddressService")
+	@Resource(name = "hslgUserAddressService")
 	private UserAddressService userAddressService;
 	
 	/**
@@ -75,19 +75,6 @@ public class UserAddressController extends BaseController {
 			ovo =new OVO(-1,"用户不存在","用户不存在");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
-		String province_id =ivo.getString("province_id","");
-		if(StringUtils.isEmptyOrNull(province_id))
-		{
-			ovo =new OVO(-1,"省份编号不能为空","省份编号不能为空");
-			return AesUtil.encode(VOConvert.ovoToJson(ovo));
-		}
-		String city_id =ivo.getString("city_id","");
-		if(StringUtils.isEmptyOrNull(city_id))
-		{
-			ovo =new OVO(-1,"城市编号不能为空","城市编号不能为空");
-			return AesUtil.encode(VOConvert.ovoToJson(ovo));
-		}
-		String region_id =ivo.getString("region_id","");
 		String address =ivo.getString("address","");
 		if(StringUtils.isEmptyOrNull(address))
 		{
@@ -106,27 +93,28 @@ public class UserAddressController extends BaseController {
 			ovo =new OVO(-1,"收货人电话不能为空","收货人电话不能为空");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
-		String zip_code =ivo.getString("zip_code","");
-		if(StringUtils.isEmptyOrNull(zip_code))
+		String door_no =ivo.getString("door_no","");
+		if(StringUtils.isEmptyOrNull(door_no))
 		{
-			ovo =new OVO(-1,"邮编不能为空","邮编不能为空");
-			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+			door_no ="";
+		}
+		String tag =ivo.getString("tag","");
+		if(StringUtils.isEmptyOrNull(tag))
+		{
+			tag ="";
 		}
 		String is_default =ivo.getString("is_default","");
 		if(StringUtils.isEmptyOrNull(is_default))
 		{
-			ovo =new OVO(-1,"是否是默认收货地址不能为空（1是默认0否）","是否是默认收货地址不能为空（1是默认0否）");
-			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+			is_default ="1";
 		}
 		Row row =new Row();
 		row.put("user_id", user_id);
-		row.put("province_id", province_id);
-		row.put("city_id", city_id);
-		row.put("region_id", region_id);
 		row.put("address", address);
 		row.put("receive_name", receive_name);
 		row.put("receive_tel", receive_tel);
-		row.put("zip_code", zip_code);
+		row.put("door_no", door_no);
+		row.put("tag", tag);
 		row.put("is_default",is_default );
 		if(is_default.equals("1"))
 		{

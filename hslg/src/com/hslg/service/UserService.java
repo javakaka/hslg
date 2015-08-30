@@ -275,6 +275,18 @@ public class UserService extends Service{
 		}
 		return existed;
 	}
+	@Transactional(value="jdbcTransactionManager",readOnly = true)
+	public boolean isNicknameExisted(String id,String nickname)
+	{
+		boolean existed =false;
+		String sSql =" select count(*) from hslg_users where  nickname='"+nickname+"' and id !='"+id+"'";
+		String num =queryField(sSql);
+		if(Integer.parseInt(num)>0)
+		{
+			existed =true;
+		}
+		return existed;
+	}
 	
 	/**
 	 * 删除
