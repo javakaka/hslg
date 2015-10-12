@@ -8,9 +8,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.page.jdbc.Page;
 import com.ezcloud.framework.page.jdbc.Pageable;
 import com.ezcloud.framework.service.Service;
+import com.ezcloud.framework.util.SettingUtils;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
@@ -131,7 +133,6 @@ public class OrderService extends Service{
 	public DataSet list(String user_id,String state,String page,String page_size)
 	{
 		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
-		
 		DataSet ds =new DataSet();
 		String sSql ="select * from hslg_order "
 				+" where user_id='"+user_id+"' " ;
@@ -142,6 +143,49 @@ public class OrderService extends Service{
 		sSql +=" order by create_time desc ";
 		sSql +=" limit "+iStart+" , "+page_size;	
 		ds =queryDataSet(sSql);
+		return ds;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public DataSet listWithOneGoods(String user_id,String state,String page,String page_size)
+	{
+		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
+		DataSet ds =new DataSet();
+		String sSql ="select a.id,a.state,a.user_id,a.create_time,a.order_no,a.transfer_state,b.goods_id,b.goods_num,b.goods_price,fu.file_path from hslg_order a "
+		+" left join hslg_order_item b on b.order_id=a.id "
+		+" left join file_attach_control fc on fc.DEAL_CODE=b.goods_id and fc.DEAL_TYPE='goods_icon' " 
+		+" left join file_attach_upload fu on fc.CONTROL_ID=fu.CONTROL_ID "
+		+" where a.user_id='"+user_id+"' " ;
+		if( !StringUtils.isEmptyOrNull(state))
+		{
+			sSql +=" and a.state='"+state+"' ";
+		}
+		sSql +=" group by a.id ";
+		sSql +=" order by a.create_time desc ";
+		sSql +=" limit "+iStart+" , "+page_size;	
+		ds =queryDataSet(sSql);
+		if(ds != null)
+		{
+			Setting setting =SettingUtils.get();
+			String site_url =setting.getSiteUrl();
+			int iPos =-1;
+			for(int i =0; i<ds.size(); i++)
+			{
+				Row row =(Row)ds.get(i);
+				String file_path =row.getString("file_path","");
+				if(StringUtils.isEmptyOrNull(file_path))
+				{
+					iPos =file_path.indexOf("resources");
+					if(iPos != -1)
+					{
+						file_path =file_path.substring(iPos,file_path.length());
+						file_path =site_url+file_path;
+						row.put("file_path", file_path);
+						ds.set(i, row);
+					}
+				}
+			}
+		}
 		return ds;
 	}
 	

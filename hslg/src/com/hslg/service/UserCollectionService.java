@@ -168,7 +168,7 @@ public class UserCollectionService extends Service{
 				{
 					file_path ="";
 				}
-				row.put("SHOP_PICTURE", file_path);
+				row.put("file_path", file_path);
 				ds.set(i, row);
 			}
 		}

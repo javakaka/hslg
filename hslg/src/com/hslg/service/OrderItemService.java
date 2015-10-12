@@ -50,14 +50,39 @@ public class OrderItemService extends Service{
 	 * @param id
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Transactional(value="jdbcTransactionManager",readOnly = true)
 	public DataSet findOrderItems(String order_id)
 	{
 		DataSet ds =new DataSet();
-		String sSql ="select a.*,b.`name` as goods_name from hslg_order_item a "
-				+" left join hslg_goods b on a.goods_id=b.id  "
+		String sSql ="select a.*,b.`name` as goods_name,fu.file_path from hslg_order_item a "
+				+" left join hslg_goods b on a.goods_id=b.id "
+				+" left join file_attach_control fc on fc.DEAL_CODE=a.id and fc.DEAL_TYPE='goods_icon' " 
+				+" left join file_attach_upload fu on fc.CONTROL_ID=fu.CONTROL_ID "
 				+" where a.order_id='"+order_id+"' ";
 		ds =queryDataSet(sSql);
+		if(ds != null)
+		{
+			Setting setting =SettingUtils.get();
+			String site_url =setting.getSiteUrl();
+			int iPos =-1;
+			for(int i =0; i<ds.size(); i++)
+			{
+				Row row =(Row)ds.get(i);
+				String file_path =row.getString("file_path","");
+				if(StringUtils.isEmptyOrNull(file_path))
+				{
+					iPos =file_path.indexOf("resources");
+					if(iPos != -1)
+					{
+						file_path =file_path.substring(iPos,file_path.length());
+						file_path =site_url+file_path;
+						row.put("file_path", file_path);
+						ds.set(i, row);
+					}
+				}
+			}
+		}
 		return ds;
 	}
 	

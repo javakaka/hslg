@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.util.AesUtil;
 import com.ezcloud.framework.util.NumberUtils;
+import com.ezcloud.framework.util.SettingUtils;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.OVO;
@@ -21,6 +23,7 @@ import com.ezcloud.utility.DateUtil;
 import com.hslg.service.GoodsService;
 import com.hslg.service.OrderItemService;
 import com.hslg.service.OrderService;
+import com.hslg.service.UserAddressService;
 import com.hslg.service.UserService;
 /**
  * 订单
@@ -45,6 +48,9 @@ public class OrderController extends BaseController {
 	@Resource(name = "hslgGoodsService")
 	private GoodsService goodsService;
 	
+	@Resource(name = "hslgUserAddressService")
+	private UserAddressService userAddressService;
+	
 	/**
 	 * 用户分页查询自己的订单，按创建时间倒序排列
 	 * @param request
@@ -61,7 +67,7 @@ public class OrderController extends BaseController {
 		String state =ivo.getString("state","");
 		String page =ivo.getString("page","1");
 		String page_size =ivo.getString("page_size","10");
-		DataSet list =orderService.list(user_id,state,page,page_size);
+		DataSet list =orderService.listWithOneGoods(user_id,state,page,page_size);
 		ovo =new OVO(0,"","");
 		ovo.set("list", list);
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));
@@ -186,7 +192,48 @@ public class OrderController extends BaseController {
 	public @ResponseBody
 	String find(HttpServletRequest request) throws Exception
 	{
-		//
+		parseRequest(request);
+		logger.info("创建订单");
+		String id =ivo.getString("id","");
+		if(StringUtils.isEmptyOrNull(id))
+		{
+			ovo =new OVO(-1,"订单编号不能为空","订单编号不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		Row orderRow =orderService.find(id);
+		if(orderRow == null)
+		{
+			ovo =new OVO(-1,"订单不存在","订单不存在");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		String address_id =orderRow.getString("address_id","");
+		DataSet goods_list =orderItemService.findOrderItems(id);
+		Row addrRow =userAddressService.find(address_id);
+		String receive_name ="";
+		String receive_tel ="";
+		String receive_address ="";
+		if(addrRow != null )
+		{
+			receive_name =addrRow.getString("receive_name", "");
+			receive_tel =addrRow.getString("receive_tel", "");
+			receive_address =addrRow.getString("address", "");
+		}
+		String transfer_fee =orderRow.getString("transfer_fee","");
+		String money =orderRow.getString("money","");
+		String transfer_state =orderRow.getString("transfer_state","0");//0未配送/已下单1已配送/配送中2已完成
+		String order_no =orderRow.getString("money","");
+		String create_time =orderRow.getString("create_time","");
+		ovo =new OVO(0,"","");
+		ovo.set("transfer_fee", transfer_fee);
+		ovo.set("money", money);
+		ovo.set("transfer_state", transfer_state);
+		ovo.set("order_no", order_no);
+		ovo.set("create_time", create_time);
+		ovo.set("receive_name", receive_name);
+		ovo.set("receive_tel", receive_tel);
+		ovo.set("receive_address", receive_address);
+		ovo.set("goods_list", goods_list);
+		
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));
 	}
 	
@@ -286,6 +333,4 @@ public class OrderController extends BaseController {
 		}
 		return sum;
 	}
-	
-	
 }

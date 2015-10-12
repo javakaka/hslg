@@ -19,6 +19,7 @@ import com.ezcloud.framework.page.jdbc.Pageable;
 import com.ezcloud.framework.util.MapUtils;
 import com.ezcloud.framework.util.Md5Util;
 import com.ezcloud.framework.util.Message;
+import com.ezcloud.framework.util.ResponseVO;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.utility.DateUtil;
@@ -30,10 +31,10 @@ import com.hslg.service.UserService;
 @RequestMapping("/hslgpage/platform/member/collection")
 public class UserCollectionContrller  extends BaseController{
 
-	@Resource(name = "cxhlUserService")
+	@Resource(name = "hslgUserService")
 	private UserService userService;
 	
-	@Resource(name = "cxhlUserCollectionService")
+	@Resource(name = "hslgUserCollectionService")
 	private UserCollectionService userCollectionService;
 	
 	/**
@@ -145,126 +146,36 @@ public class UserCollectionContrller  extends BaseController{
 	}
 	
 	
-	@RequestMapping(value = "/resetPassword")
-	public @ResponseBody
-	Message resetPassword(String id) {
-		userService.resetPassword(id);
-		return SUCCESS_MESSAGE;
-	}
 	
-	
-	/**
-	 * 检查手机号码是否已存在
-	 */
-	@RequestMapping(value = "/check_telephone", method = RequestMethod.GET)
-	public @ResponseBody
-	boolean checkTelephone(String TELEPHONE) {
-		if(StringUtils.isEmptyOrNull(TELEPHONE))
-		{
-			return false;
-		}
-		return (userService.isTelephoneExisted(TELEPHONE));
-	}
-	
-	/**
-	 * 检查用户名是否已存在
-	 */
-	@RequestMapping(value = "/check_user_name", method = RequestMethod.GET)
-	public @ResponseBody
-	boolean checkUserName(String USERNAME) {
-		if(StringUtils.isEmptyOrNull(USERNAME))
-		{
-			return false;
-		}
-		return (userService.isUserNameExisted(USERNAME));
-	}
-	
-	/**
-	 * 检查用户名是否已存在
-	 */
-	@RequestMapping(value = "/check_extra_user_name")
-	public @ResponseBody
-	boolean checkExtraUserName(String ID,String USERNAME) {
-		if(StringUtils.isEmptyOrNull(USERNAME))
-		{
-			return false;
-		}
-		if(StringUtils.isEmptyOrNull(ID))
-		{
-			return false;
-		}
-		return (userService.isExtraUserNameExisted(ID,USERNAME));
-	}
-	/**
-	 * 检查邮箱是否已存在
-	 */
-	@RequestMapping(value = "/check_email", method = RequestMethod.GET)
-	public @ResponseBody
-	boolean checkEmail(String EMAIL) {
-		if(StringUtils.isEmptyOrNull(EMAIL))
-		{
-			return false;
-		}
-		return (userService.isEmailExisted(EMAIL));
-	}
-	/**
-	 * 检查邀请码是否存在
-	 */
-	@RequestMapping(value = "/check_invite_code", method = RequestMethod.GET)
-	public @ResponseBody
-	boolean checkInviteCode(String INVITE_CODE) {
-		if(StringUtils.isEmptyOrNull(INVITE_CODE))
-		{
-			return false;
-		}
-		return (userService.isInviteCodeExisted(INVITE_CODE));
-	}
-	
-	/**
-	 * 检查邮箱是否已存在
-	 */
-	@RequestMapping(value = "/check_extra_email")
-	public @ResponseBody
-	boolean checkExtraEmail(String ID,String EMAIL) {
-		if(StringUtils.isEmptyOrNull(EMAIL))
-		{
-			return false;
-		}
-		if(StringUtils.isEmptyOrNull(ID))
-		{
-			return false;
-		}
-		return (userService.isExtraEmailExisted(ID,EMAIL));
-	}
 	
 	/**
 	 * 检查身份证号码是否已存在
 	 */
-	@RequestMapping(value = "/check_id_card_no", method = RequestMethod.GET)
+	@RequestMapping(value = "/collectGooods")
 	public @ResponseBody
-	boolean check_id_card_no(String ID_CARD_NO) {
-		if(StringUtils.isEmptyOrNull(ID_CARD_NO))
+	ResponseVO collectGooods(String user_id, String goods_id) 
+	{
+		ResponseVO ovo =null;
+		if(StringUtils.isEmptyOrNull(user_id))
 		{
-			return false;
+			ovo =new ResponseVO(-1, "用户未登录", "用户未登录");
+			return ovo;
 		}
-		return (userService.isIdCardNoExisted(ID_CARD_NO));
-	}
-	
-	/**
-	 * 检查身份证号码是否已存在
-	 */
-	@RequestMapping(value = "/check_extra_id_card_no")
-	public @ResponseBody
-	boolean check_extra_id_card_no(String ID, String ID_CARD_NO) {
-	if(StringUtils.isEmptyOrNull(ID_CARD_NO))
-	{
-		return false;
-	}
-	if(StringUtils.isEmptyOrNull(ID))
-	{
-		return false;
-	}
-	return (userService.isExtraIdCardNoExisted(ID,ID_CARD_NO));
+		if(StringUtils.isEmptyOrNull(goods_id))
+		{
+			ovo =new ResponseVO(-1, "用户未选中商品", "用户未选中商品");
+			return ovo;
+		}
+		Row row =userCollectionService.find(user_id, goods_id);
+		if(row == null )
+		{
+			Row insertRow =new Row();
+			insertRow.put("user_id", user_id);
+			insertRow.put("goods_id", goods_id);
+			userCollectionService.insert(insertRow);
+		}
+		ovo =new ResponseVO(0, "success", "success");
+		return ovo;
 	}
 	
 }

@@ -123,7 +123,8 @@ public class ApiTest {
 		   try {
 				ivo.set("username", "13826531136");
 				ivo.set("username", "kakaka");
-			   ivo.set("password", "E10ADC3949BA59ABBE56E057F20F883E");
+				ivo.set("username", "13826531135");
+			   ivo.set("password", "670B14728AD9902AECBA32E22FA4F6BD");
 				//客户端版本
 				ivo.set("version", "1.1");
 				String json =  VOConvert.ivoToJson(ivo);
@@ -225,14 +226,14 @@ public class ApiTest {
 	//修改密码
 	public static void changePassword()
 	{
-		String url ="http://localhost:8080/hslg/api/user/changePassword.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/user/changePassword.do";
+//		String url ="http://localhost:8080/hslg/api/user/changePassword.do";
+		String url ="http://120.25.253.240:8080/hslg/api/user/changePassword.do";
 		IVO ivo =new IVO();
 		   try {
 				ivo.set("user_id", "2");
 				ivo.set("oldPwd", "E10ADC3949BA59ABBE56E057F20F883E");//123456
 				ivo.set("newPwd", "670B14728AD9902AECBA32E22FA4F6BD");//000000
-				ivo.set("sms_code", "923940");
+				ivo.set("sms_code", "109389");
 				ivo.set("telephone", "13826531136");
 				String json =  VOConvert.ivoToJson(ivo);
 				System.out.println("\n 加密前 ivo to json ====>>"+json);
@@ -257,8 +258,8 @@ public class ApiTest {
 	//找回密码时发送短信验证码
 	public static void sendSmsResetPwd()
 	{
-		String url ="http://localhost:8080/hslg/api/sms/send_reset_pwd.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/sms/send_reset_pwd.do";
+//		String url ="http://localhost:8080/hslg/api/sms/send_reset_pwd.do";
+		String url ="http://120.25.253.240:8080/hslg/api/sms/send_reset_pwd.do";
 		IVO ivo =new IVO();
 		   try {
 			   //手机号
@@ -313,8 +314,8 @@ public class ApiTest {
 	//修改个人信息
 	public static void updateProfile()
 	{
-		String url ="http://localhost:8080/hslg/api/user/updateProfile.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/user/updateProfile.do";
+//		String url ="http://localhost:8080/hslg/api/user/updateProfile.do";
+		String url ="http://120.25.253.240:8080/hslg/api/user/updateProfile.do";
 		IVO ivo =new IVO();
 		   try {
 				ivo.set("id", "1");
@@ -391,11 +392,12 @@ public class ApiTest {
 	 */
 	public static void queryAllAds()
 	{
-//	String url ="http://120.25.253.240:8080/hslg/api/ad/list.do";
-	String url ="http://localhost:8080/hslg/api/ad/list.do";
+	String url ="http://120.25.253.240:8080/hslg/api/ad/list.do";
+//	String url ="http://localhost:8080/hslg/api/ad/list.do";
 	IVO ivo =new IVO();
 	try {
 			ivo.set("page", "1");
+			ivo.set("page", "5");
 //			ivo.set("page", "2");
 //			ivo.set("page", "3");
 			String json =  VOConvert.ivoToJson(ivo);
@@ -647,8 +649,8 @@ public class ApiTest {
 	 */
 	public static void queryUserAddressPaeg()
 	{
-		String url ="http://localhost:8080/hslg/api/user/address/list.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/user/address/list.do";
+//		String url ="http://localhost:8080/hslg/api/user/address/list.do";
+		String url ="http://120.25.253.240:8080/hslg/api/user/address/list.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("user_id", "1");
@@ -682,9 +684,9 @@ public class ApiTest {
 		IVO ivo =new IVO();
 		try {
 			ivo.set("user_id", "1");
-			ivo.set("province_id", "19");
-			ivo.set("city_id", "202");
-			ivo.set("region_id", "1956");
+//			ivo.set("province_id", "19");
+//			ivo.set("city_id", "202");
+//			ivo.set("region_id", "1956");
 			ivo.set("address", "福田车公庙");
 			ivo.set("receive_name", "小童");
 			ivo.set("receive_tel", "1382653136");
@@ -857,12 +859,11 @@ public class ApiTest {
 	//分页查询用户收藏
 	public static void queryPageUserCollection()
 	{
-//		String url ="http://localhost:8080/hslg/api/user/collection/list.do";
-		String url ="http://120.25.253.240:8080/hslg/api/user/collection/list.do";
+		String url ="http://localhost:8080/hslg/api/user/collection/list.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/user/collection/list.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("user_id", "1");
-			ivo.set("user_id", "494");
 			ivo.set("page", "1");
 			ivo.set("page_size", "10");
 			String json =  VOConvert.ivoToJson(ivo);
@@ -886,12 +887,12 @@ public class ApiTest {
 	//用户添加收藏
 	public static void userAddCollection()
 	{
-		String url ="http://localhost:8080/hslg/api/user/collection/add.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/user/collection/add.do";
+//		String url ="http://localhost:8080/hslg/api/user/collection/add.do";
+		String url ="http://120.25.253.240:8080/hslg/api/user/collection/add.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("user_id", "1");
-			ivo.set("shop_id", "1");
+			ivo.set("goods_id", "1");
 			String json =  VOConvert.ivoToJson(ivo);
 			System.out.println("\n 加密前 ivo to json ====>>"+json);
 			//加密
@@ -1223,8 +1224,8 @@ public class ApiTest {
 	//订单项
 	public static void queryOrderItems()
 	{
-		String url ="http://localhost:8080/hslg/api/order/item/list.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/order/item/list.do";
+		String url ="http://localhost:8080/hslg/api/order/profile/detail.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/order/profile/detail.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("id", "1");
@@ -1369,12 +1370,12 @@ public class ApiTest {
 	//上传头像
 	public static void uploadAvatar()
 	{
-		String url ="http://localhost:8080/hslg/api/user/upload_avatar.do";
-//			String url ="http://120.25.253.240:8080/hslg/api/user/upload_avatar.do";
+//		String url ="http://localhost:8080/hslg/api/user/upload_avatar.do";
+			String url ="http://120.25.253.240:8080/hslg/api/user/upload_avatar.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("id", "1");
-			String pictrue = Base64Util.GetImageStr("/Users/TongJianbo/Desktop/123.png");
+			String pictrue = Base64Util.GetImageStr("/Users/TongJianbo/Desktop/123.jpg");
 			ivo.set("picture_base64_str", Base64Util.encode(pictrue.getBytes()));
 			String json =  VOConvert.ivoToJson(ivo);
 			
@@ -1492,6 +1493,34 @@ public class ApiTest {
 			ivo.set("order_id", "1");
 			ivo.set("app_ip", "192.168.11.99");
 			ivo.set("service_name", "cxhlWeiXinAppPayService");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//微信app支付
+	public static void alipayAppPay()
+	{
+		String url ="http://localhost:8080/hslg/api/pay/alipay/app/validate.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/pay/alipay/app/validate.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("order_id", "1");
+			ivo.set("service_name", "hslgAlipayAppPayService");
 			String json =  VOConvert.ivoToJson(ivo);
 			
 			System.out.println("\n 加密前 ivo to json ====>>"+json);
@@ -1695,6 +1724,437 @@ public class ApiTest {
 		}
 	}
 	
+	//查询爱心捐赠界面数据
+	public static void queryLovePage()
+	{
+//		String url ="http://localhost:8080/hslg/api/convenient/love/profile/list.do";
+		String url ="http://120.25.253.240:8080/hslg/api/convenient/love/profile/list.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "4");
+//			ivo.set("user_id", "1");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//爱心捐赠
+	public static void loveDonateByAlipay()
+	{
+		String url ="http://localhost:8080/hslg/api/pay/alipay/app/validate.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/pay/alipay/app/validate.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("order_id", "1");
+			ivo.set("money", "100");
+			ivo.set("service_name", "hslgAlipayAppPayLoveDonateService");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//爱心捐赠
+	public static void loveDonateByAlipayNotify()
+	{
+		String url ="http://localhost:8080/hslg/api/convenient/love/profile/notify.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/convenient/love/profile/notify.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("order_no", "2015091321022701915");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//公益项目捐赠
+	public static void projectDonateByAlipay()
+	{
+		String url ="http://localhost:8080/hslg/api/pay/alipay/app/validate.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/pay/alipay/app/validate.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("order_id", "1");
+			ivo.set("money", "50");
+			ivo.set("service_name", "hslgAlipayAppPayProjectDonateService");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//公益项目捐赠
+	public static void projectDonateByAlipayNotify()
+	{
+		String url ="http://localhost:8080/hslg/api/convenient/project/profile/notify.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/convenient/project/profile/notify.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("order_no", "2015091322311101915");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//善小档案捐赠
+	public static void archiveDonateByAlipay()
+	{
+		String url ="http://localhost:8080/hslg/api/pay/alipay/app/validate.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/pay/alipay/app/validate.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("order_id", "1");
+			ivo.set("money", "150");
+			ivo.set("service_name", "hslgAlipayAppPayArchiveDonateService");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//善小档案捐赠
+	public static void archiveDonateByAlipayNotify()
+	{
+		String url ="http://localhost:8080/hslg/api/convenient/archive/profile/notify.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/convenient/archive/profile/notify.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("order_no", "2015091322321801915");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//分页查询档案
+	public static void queryArchivePage()
+	{
+		String url ="http://localhost:8080/hslg/api/convenient/archive/profile/list.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/convenient/archive/profile/list.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("page", "1");
+			ivo.set("page_size", "10");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//分页查询公益项目
+	public static void queryProjectPage()
+	{
+		String url ="http://localhost:8080/hslg/api/convenient/project/profile/list.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/convenient/project/profile/list.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("page", "1");
+			ivo.set("page_size", "10");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//分页查询便民信息
+	public static void queryConvennientInfoPage()
+	{
+//		String url ="http://localhost:8080/hslg/api/convennient/info/profile/list.do";
+			String url ="http://120.25.253.240:8080/hslg/api/convennient/info/profile/list.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("page", "1");
+			ivo.set("page_size", "10");
+			ivo.set("type_id", "1");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//查询分享的图片与标题
+	public static void queryShare()
+	{
+		String url ="http://localhost:8080/hslg/api/promsg/share.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/promsg/share.do";
+		IVO ivo =new IVO();
+		try {
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//查询分享的图片与标题
+	public static void querySysInfoPage()
+	{
+		String url ="http://localhost:8080/hslg/api/mailbox/sysinfo/list.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/sysinfo/list.do";
+		IVO ivo =new IVO();
+		try {
+			String json =  VOConvert.ivoToJson(ivo);
+			ivo.set("page", "1");
+			ivo.set("page_size", "10");
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//查询分享的图片与标题
+	public static void querySysinfoDetail()
+	{
+		String url ="http://localhost:8080/hslg/api/mailbox/sysinfo/detail.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/sysinfo/detail.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("id", "1");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//查询分享的图片与标题
+	public static void querySysBroadcastPage()
+	{
+		String url ="http://localhost:8080/hslg/api/mailbox/sysbroadcast/list.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/sysbroadcast/list.do";
+		IVO ivo =new IVO();
+		try {
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//查询分享的图片与标题
+	public static void querySysBroadcastDetail()
+	{
+		String url ="http://localhost:8080/hslg/api/mailbox/sysbroadcast/detail.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/sysbroadcast/detail.do";
+		IVO ivo =new IVO();
+		try {
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//查询善小财务汇总
+	public static void queryFinance()
+	{
+//		String url ="http://localhost:8080/hslg/api/convenient/finance/summary.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/convenient/finance/summary.do";
+			String url ="http://120.25.253.240:8080/hslg/api/convenient/finance/summary.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public static void main(String args[])
 	{
 		System.out.println("\n==========request start=============");
@@ -1705,7 +2165,7 @@ public class ApiTest {
 //		注册
 //		register();
 //		登陆
-		login();
+//		login();
 //		注销
 //		logout();
 //		登陆
@@ -1720,6 +2180,8 @@ public class ApiTest {
 //		queryProfile();
 //		修改个人信息
 //		updateProfile();
+//		上传头像
+//		uploadAvatar();
 //		mailtest();
 //		查询广告列表
 //		queryAllAds();
@@ -1761,10 +2223,6 @@ public class ApiTest {
 //		queryGoodsJudgement();
 //		添加商品评论
 //		addGoodsJudgement();
-//		分页查询商家优惠券
-//		queryShopCouponPage();
-//		分页查询商家优惠券图文详情
-//		queryShopCouponRemark();
 //		创建订单
 //		createOrder();
 //		用户分页查询自己的订单
@@ -1773,10 +2231,44 @@ public class ApiTest {
 //		queryOrderItems();
 //		微信app支付
 //		weixinAppPay();
+//		支付宝app支付
+//		alipayAppPay();
 //		模拟调用统一支付接口
 //		monitorS2WX();
 //		用户分享
 //		userShare();
+//		查询爱心捐赠界面数据
+//		queryLovePage();
+//		爱心捐赠
+//		loveDonateByAlipay();
+//		爱心捐赠通知
+//		loveDonateByAlipayNotify();
+//		分页查询档案
+//		queryArchivePage();
+//		档案捐赠
+//		archiveDonateByAlipay();
+//		档案捐赠通知
+//		archiveDonateByAlipayNotify();
+//		分页查询公益项目
+//		queryProjectPage();
+//		项目捐赠
+//		projectDonateByAlipay();
+//		项目捐赠通知
+//		projectDonateByAlipayNotify();
+//		查询分享的图片与标题
+//		queryShare();
+//		分页查询系统信息
+//		querySysInfoPage();
+//		查询系统信息详情
+//		querySysinfoDetail();
+//		分页查询系统广播
+//		querySysBroadcastPage();
+//		查询系统广播详情
+//		querySysBroadcastDetail();
+//		查询善小财务汇总
+		queryFinance();
+//		分页查询便民信息
+//		queryConvennientInfoPage();
 
 		System.out.println("\n==========request  end=============");
 	}

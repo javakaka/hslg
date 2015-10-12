@@ -14,7 +14,7 @@ import com.ezcloud.utility.DateUtil;
  * @version 创建时间：2015-1-1 下午4:24:59  
  * 类说明:规则消息业务处理类 
  */
-@Component("fzbRuleMessageService")
+@Component("hslgRuleMessageService")
 public class RuleMessageService extends Service {
 
 	public RuleMessageService() 
@@ -25,17 +25,17 @@ public class RuleMessageService extends Service {
 	public int insert(Row row) 
 	{
 		int rowNum =0;
-		int id =getTableSequence("rent_rule_message", "id", 1);
+		int id =getTableSequence("hslg_rule_message", "id", 1);
 		row.put("id", id);
 		row.put("create_time", DateUtil.getCurrentDateTime());
-		rowNum =insert("rent_rule_message", row);
+		rowNum =insert("hslg_rule_message", row);
 		return rowNum;
 	}
 	
 	public Row findById(String id)
 	{
 		Row row =null;
-		sql ="select * from rent_rule_message where id='"+id+"'";
+		sql ="select * from hslg_rule_message where id='"+id+"'";
 		row =queryRow(sql);
 		return row;
 	}
@@ -45,7 +45,7 @@ public class RuleMessageService extends Service {
 		int rowNum =0;
 		String id=row.getString("id");
 		row.put("modify_time", DateUtil.getCurrentDateTime());
-		update("rent_rule_message", row, " id='"+id+"'");
+		update("hslg_rule_message", row, " id='"+id+"'");
 		return rowNum;
 	}
 	
@@ -58,12 +58,12 @@ public class RuleMessageService extends Service {
 	 */
 	public Page queryPage(Pageable pageable) {
 		Page page = null;
-		sql ="select * from rent_rule_message  where 1=1 "; 
+		sql ="select * from hslg_rule_message  where 1=1 "; 
 		String restrictions = addRestrictions(pageable);
 		String orders = addOrders(pageable);
 		sql += restrictions;
 		sql += orders;
-		String countSql ="select count(*) from rent_rule_message  where 1=1 "; 
+		String countSql ="select count(*) from hslg_rule_message  where 1=1 "; 
 		countSql += restrictions;
 		countSql += orders;
 		long total = count(countSql);
@@ -96,7 +96,7 @@ public class RuleMessageService extends Service {
 				}
 				id += "'" + String.valueOf(ids[i]) + "'";
 			}
-			sql = "delete from rent_rule_message where id in(" + id + ")";
+			sql = "delete from hslg_rule_message where id in(" + id + ")";
 			update(sql);
 		}
 	}

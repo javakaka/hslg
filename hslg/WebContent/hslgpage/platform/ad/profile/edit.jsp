@@ -102,24 +102,48 @@ $().ready(function() {
 								<option value="1" selected>首页</option>
 								<option value="2" >公益项目</option>
 								<option value="3" >善小档案</option>
+								<option value="4" >爱心捐赠</option>
+								<option value="5" >善小财务</option>
 							</c:when>
 							<c:when test="${row.PAGE ==2}">
 								<option value="" >请选择..</option>
 								<option value="1" >首页</option>
 								<option value="2" selected>公益项目</option>
 								<option value="3" >善小档案</option>
+								<option value="4" >爱心捐赠</option>
+								<option value="5" >善小财务</option>
 							</c:when>
 							<c:when test="${row.PAGE ==3}">
 								<option value="" >请选择..</option>
 								<option value="1" >首页</option>
 								<option value="2" >公益项目</option>
 								<option value="3" selected>善小档案</option>
+								<option value="4" >爱心捐赠</option>
+								<option value="5" >善小财务</option>
+							</c:when>
+							<c:when test="${row.PAGE ==4}">
+								<option value="" >请选择..</option>
+								<option value="1" >首页</option>
+								<option value="2" >公益项目</option>
+								<option value="3" >善小档案</option>
+								<option value="4" selected>爱心捐赠</option>
+								<option value="5" >善小财务</option>
+							</c:when>
+							<c:when test="${row.PAGE ==5}">
+								<option value="" >请选择..</option>
+								<option value="1" >首页</option>
+								<option value="2" >公益项目</option>
+								<option value="3" >善小档案</option>
+								<option value="4" >爱心捐赠</option>
+								<option value="5" selected>善小财务</option>
 							</c:when>
 							<c:otherwise>
 								<option value="" selected>请选择..</option>
 								<option value="1" >首页</option>
 								<option value="2" >公益项目</option>
 								<option value="3" >善小档案</option>
+								<option value="4" >爱心捐赠</option>
+								<option value="5" >善小财务</option>
 							</c:otherwise>
 						</c:choose>
 					</select>

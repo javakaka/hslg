@@ -132,6 +132,12 @@ $().ready(function() {
 							<c:when test="${row.PAGE ==3}">
 								善小档案
 							</c:when>
+							<c:when test="${row.PAGE ==4}">
+								爱心捐赠
+							</c:when>
+							<c:when test="${row.PAGE ==5}">
+								善小财务
+							</c:when>
 							<c:otherwise>
 								--
 							</c:otherwise>

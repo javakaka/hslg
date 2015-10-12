@@ -28,7 +28,7 @@ $().ready(function() {
 		公益管理 &raquo;档案列表
 		<span><cc:message key="admin.page.total" args="${page.total}"/></span>
 	</div>
-	<form id="listForm" action="AdList.do" method="get">
+	<form id="listForm" action="list.do" method="get">
 		<div class="bar">
 			<a href="add.do" class="iconButton">
 				<span class="addIcon">&nbsp;</span><cc:message key="admin.common.add" />

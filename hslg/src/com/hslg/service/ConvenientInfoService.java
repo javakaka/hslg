@@ -8,9 +8,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.page.jdbc.Page;
 import com.ezcloud.framework.page.jdbc.Pageable;
 import com.ezcloud.framework.service.Service;
+import com.ezcloud.framework.util.SettingUtils;
+import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.utility.DateUtil;
@@ -97,12 +100,31 @@ public class ConvenientInfoService extends Service{
 		return page;
 	}
 	
-	public DataSet list()
+	@SuppressWarnings("unchecked")
+	public DataSet list(String page, String page_size)
 	{
+		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
 		DataSet ds =new DataSet();
-		String sSql ="select id,type_name,seq from hslg_convenient_info a where state='1' "
-				+" order by a.seq ";
-		ds =queryDataSet(sSql);
+		String sql ="select id,type_id,name,address,link_tel,link_name,icon_url from hslg_convenient_info "
+				+" order by create_time desc  limit "+iStart+" , "+page_size ;
+		ds =queryDataSet(sql);
+		if(ds != null )
+		{
+			Setting setting =SettingUtils.get();
+			String domain =setting.getSiteUrl();
+			for(int i=0; i<ds.size(); i++ )
+			{
+				Row row =(Row)ds.get(i);
+				String icon_url =row.getString("icon_url","");
+				if(!StringUtils.isEmptyOrNull(icon_url))
+				{
+					icon_url =icon_url.replace("/hslg", "");
+					icon_url =domain+icon_url;
+					row.put("icon_url", icon_url);
+					ds.set(i, row);
+				}
+			}
+		}
 		return ds;
 	}
 	

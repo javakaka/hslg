@@ -139,6 +139,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script type="text/javascript" src="<%=basePath%>hslgpage/app/res/js/goods-detail.js"></script>
  </body>
  <script>
+ var baseUrl ="<%=basePath%>";
+ var raw_price ='${goods_row.RAW_PRICE}';
+ var coupon_price ='${goods_row.COUPON_PRICE}';
+ var is_coupon ='${goods_row.IS_COUPON}';
+ var left_num ='${goods_row.LEFT_NUM}';
  	$(function(){
  		
  	});

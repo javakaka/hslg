@@ -30,16 +30,38 @@ $(function(){
 	});
 	/** 加入购物车 **/
 	$("#addToCarBtn").click(function(){
-		addGoodsToShopCar(USER_ID,GOODS_ID);
+		var json_str ="{\"id\":\""+GOODS_ID+"\",\"left_num\":\""+left_num+"\",\"raw_price\":\""+raw_price+"\",\"is_coupon\":\""+is_coupon+"\",\"coupon_price\":\""+coupon_price+"\",}";
+		goodDetail.intoShoppingChar(json_str);
 	});
 });
 
 function collectGoods(user_id,goods_id)
 {
-
-}
-
-function addGoodsToShopCar(user_id,goods_id)
-{
-
+		var params={goods_id: GOODS_ID,user_id: USER_ID}
+		$.ajax({
+				url: baseUrl+"hslgpage/platform/member/collection/collectGooods.do",
+				type: "POST",
+				data: params,
+				dataType: "json",
+				cache: false,
+				beforeSend: function (XMLHttpRequest){
+				},
+				success: function(ovo, textStatus) {
+					var code =ovo.code;
+					if(code >=0)
+					{
+						alert("收藏成功");	
+					}
+					else
+					{
+						alert("收藏出错");
+					}
+				},
+				complete: function (XMLHttpRequest, textStatus){
+					//alert("complete...");
+				},
+				error: function (){
+					alert('error');
+				}
+			});
 }

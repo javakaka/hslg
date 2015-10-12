@@ -22,10 +22,10 @@ import com.ezcloud.framework.vo.Row;
 import com.hslg.service.RuleMessageService;
 
 @Controller("hslgPlatformRuleMessageController")
-@RequestMapping("/hslgpage/platform/rule_message")
+@RequestMapping("/hslgpage/platform/promsg")
 public class RuleMessageContrller  extends BaseController{
 	
-	@Resource(name = "fzbRuleMessageService")
+	@Resource(name = "hslgRuleMessageService")
 	private RuleMessageService ruleMessageService;
 
 	/**
@@ -39,13 +39,13 @@ public class RuleMessageContrller  extends BaseController{
 		Page page = ruleMessageService.queryPage(pageable);
 		model.addAttribute("page", page);
 		ruleMessageService.getRow().clear();
-		return "/hslgpage/platform/rule_message/list";
+		return "/hslgpage/platform/promsg/list";
 	}
 	
 	
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
-		return "/hslgpage/platform/rule_message/add";
+		return "/hslgpage/platform/promsg/add";
 	}	
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -60,7 +60,7 @@ public class RuleMessageContrller  extends BaseController{
 	public String edit(String id, ModelMap model) {
 		Assert.notNull(id);
 		model.addAttribute("row", ruleMessageService.findById(id));
-		return "/hslgpage/platform/rule_message/edit";
+		return "/hslgpage/platform/promsg/edit";
 	}
 
 	@RequestMapping(value = "/update")

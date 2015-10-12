@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.util.AesUtil;
+import com.ezcloud.framework.util.SettingUtils;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.OVO;
 import com.ezcloud.framework.vo.Row;
@@ -16,12 +18,12 @@ import com.ezcloud.framework.vo.VOConvert;
 import com.hslg.service.RuleMessageService;
 
 @Controller("mobileRuleMessageController")
-@RequestMapping("/api/core/rule_message")
+@RequestMapping("/api/promsg")
 public class RuleMessageController extends BaseController {
 	
 	private static Logger logger = Logger.getLogger(RuleMessageController.class); 
 	
-	@Resource(name = "fzbRuleMessageService")
+	@Resource(name = "hslgRuleMessageService")
 	private RuleMessageService ruleMessageService;
 
 	/**
@@ -161,4 +163,46 @@ public class RuleMessageController extends BaseController {
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));
 	}
 
+	/**
+	 * 查询分享的图片与标题
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value ="/share")
+	public @ResponseBody
+	String queryShareMsg(HttpServletRequest request) throws Exception
+	{
+		parseRequest(request);
+		logger.info("查询分享的图片与标题");
+		String id="5";
+		Row row =ruleMessageService.findById(id);
+		String title =row.getString("title","");
+		String icon_url =row.getString("icon_url","");
+		Setting setting =SettingUtils.get();
+		String siteUrl =setting.getSiteUrl();
+		String serverUrl =setting.getSiteUrl()+"/app/front/msg.do?id=5";
+		if(!StringUtils.isEmptyOrNull(siteUrl))
+		{
+			siteUrl =siteUrl.replace("cxhl", "");
+		}
+		icon_url =siteUrl+icon_url;
+		OVO ovo =new OVO(0,"","");
+		ovo.set("title", title);
+		ovo.set("icon_url", icon_url);
+		ovo.set("server_url", serverUrl);
+		//浏览次数+1
+		Row tempRow =new Row();
+		tempRow.put("id", id);
+		String view_num =tempRow.getString("view_num","");
+		if(StringUtils.isEmptyOrNull(view_num))
+		{
+			view_num ="0";
+		}
+		int num =Integer.parseInt(view_num);
+		num ++;
+		tempRow.put("view_num", num);
+		ruleMessageService.update(tempRow);
+		return AesUtil.encode(VOConvert.ovoToJson(ovo));
+	}
 }
