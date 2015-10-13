@@ -14,7 +14,6 @@ import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.OVO;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.framework.vo.VOConvert;
-import com.hslg.service.GoodsAttributeService;
 import com.hslg.service.GoodsService;
 import com.hslg.service.UserCollectionService;
 import com.hslg.service.UserService;
@@ -56,6 +55,26 @@ public class GoodsController extends BaseController {
 		String page =ivo.getString("page","1");
 		String page_size =ivo.getString("page_size","10");
 		DataSet list =goodsService.list(type_id,is_hot,team_buy,page,page_size);
+		ovo =new OVO(0,"","");
+		ovo.set("list", list);
+		return AesUtil.encode(VOConvert.ovoToJson(ovo));
+	}
+	
+	@RequestMapping(value ="/search")
+	public @ResponseBody
+	String indexPageSearch(HttpServletRequest request) throws Exception
+	{
+		parseRequest(request);
+		logger.info("首页搜索商品");
+		String key_words =ivo.getString("key_words","");
+		if(StringUtils.isEmptyOrNull(key_words))
+		{
+			ovo =new OVO(-1,"搜索关键字不能为空","搜索关键字不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		String page =ivo.getString("page","1");
+		String page_size =ivo.getString("page_size","50");
+		DataSet list =goodsService.search(key_words,page,page_size);
 		ovo =new OVO(0,"","");
 		ovo.set("list", list);
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));

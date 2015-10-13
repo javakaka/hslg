@@ -990,6 +990,34 @@ public class ApiTest {
 			e.printStackTrace();
 		}
 	}
+	
+	//首页搜索商品
+	public static void IndexPageSearchGoods()
+	{
+		String url ="http://localhost:8080/hslg/api/goods/profile/search.do";
+//		String url ="http://120.25.253.240:8080/hslg/api/goods/profile/search.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("key_words", "香满园");
+			ivo.set("page", "1");
+			ivo.set("page_size", "50");
+			String json =  VOConvert.ivoToJson(ivo);
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	//查询商家详情
 	public static void queryGoodsDetail()
 	{
@@ -2079,6 +2107,83 @@ public class ApiTest {
 		}
 	}
 	//查询分享的图片与标题
+	public static void queryUserInfoPage()
+	{
+		String url ="http://localhost:8080/hslg/api/mailbox/userletter/list.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/userletter/list.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("page", "1");
+			ivo.set("page_size", "10");
+			String json =  VOConvert.ivoToJson(ivo);
+			System.out.println("\n 加密前============@@@ ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//查询分享的图片与标题
+	public static void queryUserInfoDetail()
+	{
+		String url ="http://localhost:8080/hslg/api/mailbox/userletter/detail.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/userletter/detail.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("id", "1");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//首页查询系统广播
+	public static void indexPageQueryBroadcast()
+	{
+		String url ="http://localhost:8080/hslg/api/mailbox/sysbroadcast/top-page-broadcast.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/sysbroadcast/top-page-broadcast.do";
+		IVO ivo =new IVO();
+		try {
+			String json =  VOConvert.ivoToJson(ivo);
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//分页查询系统广播
 	public static void querySysBroadcastPage()
 	{
 		String url ="http://localhost:8080/hslg/api/mailbox/sysbroadcast/list.do";
@@ -2266,10 +2371,15 @@ public class ApiTest {
 //		查询系统广播详情
 //		querySysBroadcastDetail();
 //		查询善小财务汇总
-		queryFinance();
+//		queryFinance();
 //		分页查询便民信息
 //		queryConvennientInfoPage();
-
+//		首页搜索商品
+//		IndexPageSearchGoods();
+//		indexPageQueryBroadcast();
+//		分页用户信息
+//		queryUserInfoPage();
+		queryUserInfoDetail();
 		System.out.println("\n==========request  end=============");
 	}
 	

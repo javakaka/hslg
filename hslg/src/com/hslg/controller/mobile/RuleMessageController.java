@@ -184,7 +184,7 @@ public class RuleMessageController extends BaseController {
 		String serverUrl =setting.getSiteUrl()+"/app/front/msg.do?id=5";
 		if(!StringUtils.isEmptyOrNull(siteUrl))
 		{
-			siteUrl =siteUrl.replace("cxhl", "");
+			siteUrl =siteUrl.replace("hslg", "");
 		}
 		icon_url =siteUrl+icon_url;
 		OVO ovo =new OVO(0,"","");

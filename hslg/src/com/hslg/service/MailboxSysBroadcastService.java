@@ -111,4 +111,12 @@ public class MailboxSysBroadcastService extends Service {
 		ds =queryDataSet(sql);
 		return ds;
 	}
+	
+	public DataSet indexPageBroadcast()
+	{
+		DataSet ds =new DataSet();
+		String sql ="select id,title from hslg_sys_broadcast where state='1' and is_top='1' order by create_time desc ";
+		ds =queryDataSet(sql);
+		return ds;
+	}
 }

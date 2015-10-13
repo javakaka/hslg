@@ -3,6 +3,7 @@ package com.hslg.controller.mobile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,66 +17,46 @@ import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.OVO;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.framework.vo.VOConvert;
-import com.hslg.service.MailboxSysBroadcastService;
+import com.hslg.service.UserLetterService;
 
 /**
- * 广播
+ * 用户消息
  * @author Administrator
  *
  */
-@Controller("mobileMailboxSysBroadcastController")
-@RequestMapping("/api/mailbox/sysbroadcast")
-public class MailboxSysBroadcastController extends BaseController {
+@Controller("mobileMailboxLetterController")
+@RequestMapping("/api/mailbox/userletter")
+public class MailboxLetterController extends BaseController {
+	
+	private static Logger logger = Logger.getLogger(MailboxLetterController.class); 
 	
 
-	@Resource(name = "hslgMailboxSysBroadcastService")
-	private MailboxSysBroadcastService mailboxSysBroadcastService;
+	@Resource(name = "hslgUserLetterService")
+	private UserLetterService userLetterService;
 	
 	/**
-	 * 根据用户编号分页查询反馈记录
+	 * 
 	 * @param request
 	 * @return
 	 * @throws Exception 
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value ="/list")
 	public @ResponseBody
 	String page(HttpServletRequest request) throws Exception
 	{
+		logger.info("get sysinfo page");
 		parseRequest(request);
 		OVO ovo =null;
+		String user_id =ivo.getString("user_id","");
+		System.out.println("user_id=========>>>"+user_id);
+		if(StringUtils.isEmptyOrNull(user_id))
+		{
+			ovo =new OVO(-10001,"用户ID不能为空","用户ID不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
 		String page =ivo.getString("page","1");
 		String page_size =ivo.getString("page_size","10");
-		DataSet ds =mailboxSysBroadcastService.list(page,page_size);
-		if(ds != null && ds.size() > 0 )
-		{
-			Setting setting =SettingUtils.get();
-			String site_url =setting.getSiteUrl();
-			for(int i=0;i<ds.size(); i++ )
-			{
-				Row temp =(Row)ds.get(i);
-				String icon_url =temp.getString("icon_url","");
-				if(! StringUtils.isEmptyOrNull(icon_url))
-				{
-					icon_url =icon_url.replace("/hslg", "");
-					icon_url =site_url+icon_url;
-					temp.put("icon_url", icon_url);
-					ds.set(i, temp);
-				}
-			}
-		}
-		ovo =new OVO(0,"","");
-		ovo.set("list", ds);
-		return AesUtil.encode(VOConvert.ovoToJson(ovo));
-	}
-	
-	@RequestMapping(value ="/top-page-broadcast")
-	public @ResponseBody
-	String indexPageBroadcast(HttpServletRequest request) throws Exception
-	{
-		parseRequest(request);
-		OVO ovo =null;
-		DataSet ds =mailboxSysBroadcastService.indexPageBroadcast();
+		DataSet ds =userLetterService.list(user_id,page,page_size);
 		ovo =new OVO(0,"","");
 		ovo.set("list", ds);
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));
@@ -98,7 +79,7 @@ public class MailboxSysBroadcastController extends BaseController {
 			ovo =new OVO(-11000,"id不能为空","id不能为空");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
-		Row row =mailboxSysBroadcastService.findById(id);
+		Row row =userLetterService.findById(id);
 		String content =row.getString("content","");
 		Setting setting =SettingUtils.get();
 		String siteUrl =setting.getSiteUrl();
@@ -112,6 +93,10 @@ public class MailboxSysBroadcastController extends BaseController {
 		content =HtmlUtils.fillImgSrcWithDomain(domain, content);
 		// 转义字符串中的换行，不然在转成json对象时会报错
 		content =StringUtils.string2Json(content);
+		Row updateRow =new Row();
+		updateRow.put("id", id);
+		updateRow.put("read_status", "1");
+		userLetterService.update(updateRow);
 		ovo =new OVO(0,"操作成功","操作成功");
 		ovo.set("content", content);
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));

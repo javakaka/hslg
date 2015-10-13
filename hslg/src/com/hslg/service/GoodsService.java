@@ -174,6 +174,7 @@ public class GoodsService extends Service{
 		return page;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public DataSet findSimilarityGoods(String goods_id,String type_id)
 	{
 		DataSet ds =new DataSet();
@@ -218,6 +219,7 @@ public class GoodsService extends Service{
 		return ds;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public DataSet list(String type_id,String is_hot, String team_buy,String page,String page_size)
 	{
 		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
@@ -239,6 +241,51 @@ public class GoodsService extends Service{
 		if(! StringUtils.isEmptyOrNull(team_buy) && team_buy.equals("1"))
 		{
 			sSql +=" and a.team_buy='1' ";
+		}
+		sSql +=" limit "+iStart+" , "+page_size;	
+		ds =queryDataSet(sSql);
+		Setting setting =SettingUtils.get();
+		String site_url =setting.getSiteUrl();
+		if(ds != null && ds.size() >0 )
+		{
+			for(int i=0;i<ds.size(); i++)
+			{
+				Row row =(Row)ds.get(i);
+				String file_path =row.getString("file_path","");
+				int iPos =-1;
+				if(!StringUtils.isEmptyOrNull(file_path))
+				{
+					iPos =file_path.indexOf("resources");
+					if(iPos != -1)
+					{
+						file_path =file_path.substring(iPos);
+						file_path =site_url+"/"+file_path;
+					}
+				}
+				else
+				{
+					file_path ="";
+				}
+				row.put("file_path", file_path);
+				ds.set(i, row);
+			}
+		}
+		return ds;
+	}
+	@SuppressWarnings("unchecked")
+	public DataSet search(String key_words,String page,String page_size)
+	{
+		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
+		DataSet ds =new DataSet();
+		String sSql ="select a.id,a.type_id,a.`name`,a.summary,a.weight,a.unit,"
+				+ "a.raw_price,a.coupon_price,a.is_coupon,a.left_num,a.sale_num,a.score,c.FILE_PATH "
+				+" from hslg_goods a "
+				+" left join file_attach_control b on b.DEAL_CODE=a.id and b.DEAL_TYPE='goods_icon' "
+				+" left join file_attach_upload c on b.CONTROL_ID=c.CONTROL_ID "
+				+" where 1=1 and a.state='1' and a.left_num > 0 ";
+		if(! StringUtils.isEmptyOrNull(key_words))
+		{
+			sSql +=" and a.name like '%"+key_words+"%' ";
 		}
 		sSql +=" limit "+iStart+" , "+page_size;	
 		ds =queryDataSet(sSql);
