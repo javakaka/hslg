@@ -48,7 +48,6 @@ public class MailboxLetterController extends BaseController {
 		parseRequest(request);
 		OVO ovo =null;
 		String user_id =ivo.getString("user_id","");
-		System.out.println("user_id=========>>>"+user_id);
 		if(StringUtils.isEmptyOrNull(user_id))
 		{
 			ovo =new OVO(-10001,"用户ID不能为空","用户ID不能为空");

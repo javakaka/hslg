@@ -8,7 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.util.AesUtil;
+import com.ezcloud.framework.util.HtmlUtils;
+import com.ezcloud.framework.util.SettingUtils;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.OVO;
@@ -96,7 +99,7 @@ public class GoodsController extends BaseController {
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		
-		Row row =goodsService.findDetail(id);
+		Row row =goodsService.findDetailWithoutPicture(id);
 		if(row ==null)
 		{
 			ovo =new OVO(-1,"商品不存在","商品不存在");
@@ -125,6 +128,8 @@ public class GoodsController extends BaseController {
 				is_collected ="1";
 			}
 		}
+		//图片列表
+		DataSet picture_list =goodsService.findPictureList(id);
 		//推荐商品，当前商品所属类型的同类型商品，当前商品id往后最靠近的两个商品
 		DataSet similarityDs =goodsService.findSimilarityGoods(id, type_id);
 		ovo =new OVO(0,"","");
@@ -140,10 +145,22 @@ public class GoodsController extends BaseController {
 		ovo.set("coupon_price", coupon_price);
 		ovo.set("is_coupon", is_coupon);
 		ovo.set("summary", summary);
-		ovo.set("detail", detail);
-		ovo.set("file_path", file_path);
+		Setting setting =SettingUtils.get();
+		String siteUrl =setting.getSiteUrl();
+		String domain =siteUrl;
+		int iPos =siteUrl.lastIndexOf("/");
+		if(iPos != -1)
+		{
+			domain =siteUrl.substring(0,iPos);
+		}
+		//替换图片标签的url为http全路径
+		detail =HtmlUtils.fillImgSrcWithDomain(domain, detail);
+		// 转义字符串中的换行，不然在转成json对象时会报错
+		detail =StringUtils.string2Json(detail);
+//		ovo.set("detail", detail);
 		ovo.set("is_collected", is_collected);
 		ovo.set("similarity_list", similarityDs);
+		ovo.set("picture_list", picture_list);
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));
 	}
 	

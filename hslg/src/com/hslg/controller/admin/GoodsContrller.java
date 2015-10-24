@@ -69,7 +69,8 @@ public class GoodsContrller extends BaseController
     int rowNum = 0;
     if (StringUtils.isEmptyOrNull(id))
     {
-      rowNum = this.goodsService.insert(row);
+    	row.put("left_num", row.getString("total_num","0"));
+    	rowNum = this.goodsService.insert(row);
     }
     else
     {

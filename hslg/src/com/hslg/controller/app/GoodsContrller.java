@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.controller.BaseController;
 import com.ezcloud.framework.service.system.SystemUpload;
+import com.ezcloud.framework.util.ResponseVO;
 import com.ezcloud.framework.util.SettingUtils;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.DataSet;
@@ -97,4 +99,17 @@ public class GoodsContrller extends BaseController
     model.addAttribute("user_id", user_id);
     return "/hslgpage/app/front/goods/goods-detail";
   }
+  
+  @RequestMapping("/judge-page")
+  @ResponseBody	
+  public ResponseVO queryJudgePage(String goods_id,String page,String page_size, ModelMap model) throws Exception
+  {
+	  ResponseVO ovo =new ResponseVO(0);
+	// goods judgement
+	  DataSet judgeDs =goodsJudgementService.findPageByGoodsId(goods_id,page,page_size);
+	  ovo.put("list", judgeDs);
+	  return ovo;
+	  
+  }
+  
 }

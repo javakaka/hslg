@@ -19,7 +19,6 @@ import com.ezcloud.framework.page.jdbc.Pageable;
 import com.ezcloud.framework.util.MapUtils;
 import com.ezcloud.framework.util.Md5Util;
 import com.ezcloud.framework.util.Message;
-import com.ezcloud.framework.util.ResponseVO;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.utility.DateUtil;
@@ -52,25 +51,6 @@ public class UserCollectionContrller  extends BaseController{
 		return "/hslgpage/platform/member/collection/list";
 	}
 	
-	/**
-	 * @param pageable
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/SelectUser")
-	public String selectUserList(String id,Pageable pageable, ModelMap model) {
-		userService.getRow().put("pageable", pageable);
-		Page page = userService.queryPage();
-		model.addAttribute("page", page);
-		if(StringUtils.isEmptyOrNull(id))
-		{
-			id ="";
-		}
-		model.addAttribute("id", id);
-		userService.getRow().clear();
-		return "/hslgpage/platform/member/collection/SelectUser";
-	}
-
 	@RequestMapping(value = "/add")
 	public String add(ModelMap model) {
 		return "/hslgpage/platform/member/collection/add";
@@ -140,42 +120,9 @@ public class UserCollectionContrller  extends BaseController{
 
 	@RequestMapping(value = "/delete")
 	public @ResponseBody
-	Message delete(Long[] ids) {
-		userService.delete(ids);
+	Message delete(String... ids) {
+		userCollectionService.delete(ids);
 		return SUCCESS_MESSAGE;
-	}
-	
-	
-	
-	
-	/**
-	 * 检查身份证号码是否已存在
-	 */
-	@RequestMapping(value = "/collectGooods")
-	public @ResponseBody
-	ResponseVO collectGooods(String user_id, String goods_id) 
-	{
-		ResponseVO ovo =null;
-		if(StringUtils.isEmptyOrNull(user_id))
-		{
-			ovo =new ResponseVO(-1, "用户未登录", "用户未登录");
-			return ovo;
-		}
-		if(StringUtils.isEmptyOrNull(goods_id))
-		{
-			ovo =new ResponseVO(-1, "用户未选中商品", "用户未选中商品");
-			return ovo;
-		}
-		Row row =userCollectionService.find(user_id, goods_id);
-		if(row == null )
-		{
-			Row insertRow =new Row();
-			insertRow.put("user_id", user_id);
-			insertRow.put("goods_id", goods_id);
-			userCollectionService.insert(insertRow);
-		}
-		ovo =new ResponseVO(0, "success", "success");
-		return ovo;
 	}
 	
 }

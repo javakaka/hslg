@@ -107,7 +107,7 @@ public class MailboxSysBroadcastService extends Service {
 	{
 		DataSet ds =new DataSet();
 		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
-		String sql ="select id,title,create_time,icon_url from hslg_sys_broadcast where state='1' order by create_time desc limit "+iStart+" , "+page_size;
+		String sql ="select id,title,summary,create_time,icon_url from hslg_sys_broadcast where state='1' order by create_time desc limit "+iStart+" , "+page_size;
 		ds =queryDataSet(sql);
 		return ds;
 	}

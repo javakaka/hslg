@@ -174,6 +174,58 @@ public class UserAddressController extends BaseController {
 	}
 	
 	/**
+	 * 查询收货地址详情
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value ="/default")
+	public @ResponseBody
+	String queryDefault(HttpServletRequest request) throws Exception
+	{
+		parseRequest(request);
+		logger.info("查询用户的默认收货地址详情");
+		String user_id =ivo.getString("user_id",null);
+		if(StringUtils.isEmptyOrNull(user_id))
+		{
+			ovo =new OVO(-1,"用户编号不能为空","用户编号不能为空");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		Row row = userAddressService.findDefault(user_id);
+		String province_id =row.getString("province_id","");
+		String province_name =row.getString("province_name","");
+		String city_id =row.getString("city_id","");
+		String city_name =row.getString("city_name","");
+		String region_id =row.getString("region_id","");
+		String region_name =row.getString("region_name","");
+		String address =row.getString("address","");
+		String receive_name =row.getString("receive_name","");
+		String receive_tel =row.getString("receive_tel","");
+		String zip_code =row.getString("zip_code","");
+		String is_default =row.getString("is_default","");
+		String door_no =row.getString("door_no","");
+		String tag =row.getString("tag","");
+		String id =row.getString("id","");
+		
+		ovo =new OVO(0,"操作成功","");
+		ovo.set("id", id);
+		ovo.set("province_id", province_id);
+		ovo.set("province_name", province_name);
+		ovo.set("city_id", city_id);
+		ovo.set("city_name", city_name);
+		ovo.set("region_id", region_id);
+		ovo.set("region_name", region_name);
+		ovo.set("address", address);
+		ovo.set("receive_name", receive_name);
+		ovo.set("receive_tel", receive_tel);
+		ovo.set("zip_code", zip_code);
+		ovo.set("is_default", is_default);
+		ovo.set("door_no", door_no);
+		ovo.set("tag", tag);
+		return AesUtil.encode(VOConvert.ovoToJson(ovo));
+	}
+	
+	/**
 	 * 修改收货地址详情
 	 * @param request
 	 * @return

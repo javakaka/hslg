@@ -83,6 +83,14 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
+					<span class="requiredField">*</span>简介:
+				</th>
+				<td>
+					<textarea type="text" id="SUMMARY" name="SUMMARY"  rows="2" cols="50" ></textarea>
+				</td>
+			</tr>
+			<tr>
+				<th>
 					<span class="requiredField">*</span>状态:
 				</th>
 				<td>

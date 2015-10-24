@@ -76,24 +76,41 @@ public class UserCollectionController extends BaseController {
 			ovo =new OVO(-1,"商品编号不能为空","商品编号不能为空");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
+		String is_collect =ivo.getString("is_collect","1");
+		if("10".indexOf(is_collect) == -1 )
+		{
+			ovo =new OVO(-1,"is_collect 值不对","is_collect 值不对");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
+		
 		Row userRow =userService.find(user_id);
 		if(userRow == null)
 		{
 			ovo =new OVO(-1,"用户不存在","用户不存在");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
-		
 		Row collection_row =userCollectionService.find(user_id,goods_id);
+		// 取消
+		if(is_collect.equals("0"))
+		{
+			if(collection_row != null)
+			{
+				userCollectionService.delete(collection_row.getString("id"));
+			}
+			ovo =new OVO(0,"操作成功","操作成功");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
 		if(collection_row != null)
 		{
 			ovo =new OVO(-10021,"用户已收藏此商品，不能重复收藏","用户已收藏此商品，不能重复收藏");
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
+		
 		Row row =new Row();
 		row.put("user_id", user_id);
 		row.put("goods_id", goods_id);
 		userCollectionService.insert(row);
-		ovo =new OVO(0,"操作成功","");
+		ovo =new OVO(0,"操作成功","操作成功");
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));
 	}
 	

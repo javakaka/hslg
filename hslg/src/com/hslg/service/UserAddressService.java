@@ -45,6 +45,20 @@ public class UserAddressService extends Service{
 	}
 	
 	@Transactional(value="jdbcTransactionManager",readOnly = true)
+	public Row findDefault(String user_id)
+	{
+		Row row =null;
+		String sSql =" select a.*,b.`name` as province_name,c.`name` as city_name,d.`name` as region_name "
+				+" from hslg_receive_address a "
+				+" left join common_province b on  a.province_id=b.id "
+				+" left join common_city c on a.city_id=c.id "
+				+" left join common_city_zone d on a.region_id=d.id "
+				+" where a.user_id='"+user_id+"' and a.is_default='1' limit 0,1";
+		row =queryRow(sSql);
+		return row;
+	}
+	
+	@Transactional(value="jdbcTransactionManager",readOnly = true)
 	public int findTotalNum()
 	{
 		int num =0;
@@ -106,10 +120,10 @@ public class UserAddressService extends Service{
 		Page page = null;
 		Pageable pageable = (Pageable) row.get("pageable");
 		sql = "select * from ("
-		+" select a.*,b.telephone,b.`name` as username, "
+		+" select a.*,b.telephone,b.username, "
 		+" cp.`name` as province_name,cc.`name` as city_name,ccz.`name` as region_name " 
 		+" from hslg_receive_address a "
-		+" left join cxhl_users b on a.user_id=b.id "
+		+" left join hslg_users b on a.user_id=b.id "
 		+" left join common_province cp on a.province_id=cp.id "
 		+" left join common_city cc on a.city_id=cc.id "
 		+" left join common_city_zone ccz on a.region_id=ccz.id "
@@ -119,10 +133,10 @@ public class UserAddressService extends Service{
 		sql += restrictions;
 		sql += orders;
 		String countSql ="select count(*) from ("
-				+" select a.*,b.telephone,b.`name` as username, "
+				+" select a.*,b.telephone,b.username, "
 				+" cp.`name` as province_name,cc.`name` as city_name,ccz.`name` as region_name " 
 				+" from hslg_receive_address a "
-				+" left join cxhl_users b on a.user_id=b.id "
+				+" left join hslg_users b on a.user_id=b.id "
 				+" left join common_province cp on a.province_id=cp.id "
 				+" left join common_city cc on a.city_id=cc.id "
 				+" left join common_city_zone ccz on a.region_id=ccz.id "

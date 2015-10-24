@@ -48,6 +48,36 @@ public class GoodsService extends Service{
 		return row;
 	}
 	
+	public Row findDetailWithoutPicture(String id)
+	{
+		Row row =null;
+		String sSql ="select a.id,a.type_id,a.`name`,a.summary,a.weight,a.unit,"
+				+ "a.raw_price,a.coupon_price,a.is_coupon,a.left_num,a.sale_num,a.score,a.detail,a.state,a.total_num, "
+				+ "d.type_name "
+				+" from hslg_goods a "
+				+" left join hslg_goods_type d on a.type_id=d.id "
+				+" where a.id='"+id+"' ";
+		row =queryRow(sSql);
+		Setting setting =SettingUtils.get();
+		String site_url =setting.getSiteUrl();
+		String file_path =row.getString("file_path","");
+		int iPos =-1;
+		if(!StringUtils.isEmptyOrNull(file_path))
+		{
+			iPos =file_path.indexOf("resources");
+			if(iPos != -1)
+			{
+				file_path =file_path.substring(iPos);
+				file_path =site_url+"/"+file_path;
+			}
+		}
+		else
+		{
+			file_path ="";
+		}
+		row.put("file_path", file_path);
+		return row;
+	}
 	public Row findDetail(String id)
 	{
 		Row row =null;
@@ -79,6 +109,41 @@ public class GoodsService extends Service{
 		}
 		row.put("file_path", file_path);
 		return row;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public DataSet findPictureList(String id)
+	{
+		DataSet ds =null;
+		String sSql ="select c.FILE_PATH "
+				+" from file_attach_control b  "
+				+" left join file_attach_upload c on b.CONTROL_ID=c.CONTROL_ID "
+				+" where  b.DEAL_CODE='"+id+"' and b.DEAL_TYPE='goods_icon'";
+		ds =queryDataSet(sSql);
+		Setting setting =SettingUtils.get();
+		String site_url =setting.getSiteUrl();
+		for(int i=0;i<ds.size(); i++ )
+		{
+			Row temp =(Row)ds.get(i);
+			String file_path =temp.getString("file_path","");
+			int iPos =-1;
+			if(!StringUtils.isEmptyOrNull(file_path))
+			{
+				iPos =file_path.indexOf("resources");
+				if(iPos != -1)
+				{
+					file_path =file_path.substring(iPos);
+					file_path =site_url+"/"+file_path;
+				}
+			}
+			else
+			{
+				file_path ="";
+			}
+			temp.put("file_path", file_path);
+			ds.set(i, temp);
+		}
+		return ds;
 	}
 	
 	@Transactional(value="jdbcTransactionManager",readOnly = true)
@@ -188,7 +253,7 @@ public class GoodsService extends Service{
 				{
 					sSql +=" and a.type_id='"+type_id+"' ";
 				}
-				sSql +=" and a.id > "+goods_id +" limit 0,2 ";
+				sSql +=" and a.id > "+goods_id +" group by a.id limit 0,2 ";
 		ds =queryDataSet(sSql);
 		Setting setting =SettingUtils.get();
 		String site_url =setting.getSiteUrl();
@@ -242,7 +307,7 @@ public class GoodsService extends Service{
 		{
 			sSql +=" and a.team_buy='1' ";
 		}
-		sSql +=" limit "+iStart+" , "+page_size;	
+		sSql +=" group by a.id limit "+iStart+" , "+page_size;	
 		ds =queryDataSet(sSql);
 		Setting setting =SettingUtils.get();
 		String site_url =setting.getSiteUrl();

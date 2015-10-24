@@ -20,7 +20,6 @@ import com.ezcloud.framework.util.MapUtils;
 import com.ezcloud.framework.util.Md5Util;
 import com.ezcloud.framework.util.Message;
 import com.ezcloud.framework.util.StringUtils;
-import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.utility.DateUtil;
 import com.ezcloud.utility.StringUtil;
@@ -31,10 +30,10 @@ import com.hslg.service.UserService;
 @RequestMapping("/hslgpage/platform/member/address")
 public class UserAddressContrller  extends BaseController{
 
-	@Resource(name = "cxhlUserService")
+	@Resource(name = "hslgUserService")
 	private UserService userService;
 	
-	@Resource(name = "cxhlUserAddressService")
+	@Resource(name = "hslgUserAddressService")
 	private UserAddressService userAddressService;
 	
 	/**
@@ -140,8 +139,8 @@ public class UserAddressContrller  extends BaseController{
 
 	@RequestMapping(value = "/delete")
 	public @ResponseBody
-	Message delete(Long[] ids) {
-		userService.delete(ids);
+	Message delete(String... ids) {
+		userAddressService.delete(ids);
 		return SUCCESS_MESSAGE;
 	}
 	

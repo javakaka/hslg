@@ -29,16 +29,16 @@ $().ready(function() {
 	</div>
 	<form id="listForm" action="list.do" method="get">
 		<div class="bar">
-			<!--
 			<a href="add.do" class="iconButton">
 				<span class="addIcon">&nbsp;</span><cc:message key="admin.common.add" />
 			</a>
+			<!--
 			-->
 			<div class="buttonWrap">
-				<!--
 				<a href="javascript:;" id="deleteButton" class="iconButton disabled">
 					<span class="deleteIcon">&nbsp;</span><cc:message key="admin.common.delete" />
 				</a>
+				<!--
 				-->
 				<a href="javascript:;" id="refreshButton" class="iconButton">
 					<span class="refreshIcon">&nbsp;</span><cc:message key="admin.common.refresh" />
@@ -89,9 +89,6 @@ $().ready(function() {
 					<input type="checkbox" id="selectAll" />
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="FROM_USER">发件人</a>
-				</th>
-				<th>
 					<a href="javascript:;" class="sort" name="TO_USER">收件人</a>
 				</th>
 				<th>
@@ -114,9 +111,6 @@ $().ready(function() {
 				<tr>
 					<td>
 						<input type="checkbox" name="ids" value="${row.ID}" />
-					</td>
-					<td>
-						${row.FROM_USER}
 					</td>
 					<td>
 						${row.TO_USER}

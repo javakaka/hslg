@@ -22,47 +22,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <meta name="full-screen" content="yes" />
   <meta name="x5-fullscreen" content="true" /> 
   <link rel="Stylesheet" href="<%=basePath%>hslgpage/app/res/css/main.css" />
+  <style>body {background:white;}</style>
  </head>
  <body >
  <input type="hidden" name="user_id" id="user_id" value="${user_id}"/>
   <input type="hidden" name="goods_id" id="goods_id" value="${goods_id}"/>
-  <div id="main" class="wrapper white " style="text-indent: 20px;">
-  <!-- icon -->
-  <div class="goods-base">
-	  <div class="goods-icon">
-		<img src="${icon_row.PATH}" class="" />
-	  </div>
-	  <div class="goods-summary">${goods_row.SUMMARY} </div>
-	  <div class="goods-action">
-			<div class="block-left">
-				<div class="up"><span class="coupon-price">${goods_row.COUPON_PRICE}元</span><span></span><span class="raw-price">${goods_row.RAW_PRICE}元</span><span></span></div>
-				<div class="down">慈善积分:<span>${goods_row.SCORE}</span></div>
-			</div>
-			<div class="block-center"  id="collectionBtn">收藏</div>
-			<div class="block-right">
-				<div class="up">现货</div>
-				<div class="down" id="addToCarBtn">加入购物车</div>
-			</div>
-	  </div>
-  </div>
-  <!-- like -->
-  <div class="goods-push">
-  	<div class="title">也许您还喜欢</div>
-  	<div class="goods">
-		<div class="icon">
-			<img src="" class=""/>
-		</div>
-		<div class="summary">${goods_row.COUPON_PRICE}</div>
-		<div class="price">600元</div>
-  	</div>
-  	<div class="goods">
-		<div class="icon">
-			<img src="" class=""/>
-		</div>
-		<div class="summary">龙杨茶叶</div>
-		<div class="price">600元</div>
-  	</div>
-  </div>
+  <div id="main" class="wrapper white " >
+  
   <!-- tab -->
   <div class="goods-tab">
 	  <div class="tool-bar">
@@ -101,17 +67,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right">${attr_row.STORE}</div>
 	  	</div>
 	  </div>
-	  <div class="tab-content" id="goodsJudgementContent" name="tabContentDiv">
-	  <c:forEach items="${judge_list}" var="item" varStatus="status">
-	   <div class="judge-item">
-			  <div class="user-profile">
-				  <div class="avatar"><img src="<%=basePath%>${item.avatar}" class=""/></div>
-				  <div class="username">${item.name}</div>
-			  </div>
-			  <div class="content">${item.CONTENT}</div>
-			  <div class="date">${item.CREATE_TIME}</div>
-		  </div>
-	  </c:forEach>
+	  <div class="tab-content judge-div" id="goodsJudgementContent" name="tabContentDiv">
+	  <div id="wrapper">
+	  <div id="scroller">
+		  	<div id="pullDown" class="idle">
+				<span class="pullDownIcon"></span>
+				<span class="pullDownLabel">下拉更新...</span>
+			</div>
+			 <div class="judge-list" id="judge_list">
+	 
+	   		</div>
+  	 	 <div id="pullUp" class="idle">
+				<span class="pullUpIcon"></span>
+				<span class="pullUpLabel">上拉更新...</span>
+			</div>
+		</div>
+	</div>
+  </div>
 		  <!--
 		  <div class="judge-item">
 			  <div class="user-profile">
@@ -133,19 +105,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  </div>
   </div>
   </div>
-  <script type="text/javascript" src="<%=basePath%>/res/js/jquery-1.8.0.min.js"></script>
-  <script type="text/javascript" src="<%=basePath%>/res/js/jquery.validate.js"></script>
-    <script type="text/javascript" src="<%=basePath%>/res/js/web.js"></script>
-  <script type="text/javascript" src="<%=basePath%>hslgpage/app/res/js/goods-detail.js"></script>
- </body>
- <script>
+  <script>
  var baseUrl ="<%=basePath%>";
  var raw_price ='${goods_row.RAW_PRICE}';
  var coupon_price ='${goods_row.COUPON_PRICE}';
  var is_coupon ='${goods_row.IS_COUPON}';
  var left_num ='${goods_row.LEFT_NUM}';
- 	$(function(){
- 		
- 	});
  </script>
+  <script type="text/javascript" src="<%=basePath%>/res/js/jquery-1.8.0.min.js"></script>
+  <script type="text/javascript" src="<%=basePath%>/res/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/res/js/web.js"></script>
+  <script type="text/javascript" src="<%=basePath%>hslgpage/app/res/js/goods-detail.js"></script>
+    <script type="text/javascript" src="<%=basePath%>hslgpage/app/res/js/iscroll.js"></script>
+ </body>
+ 
 </html>

@@ -117,7 +117,7 @@ public class UserLetterService extends Service {
 	public DataSet list(String user_id,String page,String page_size) {
 		DataSet ds =null;
 		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
-		String sql ="select a.id,a.title,a.read_status,a.create_time "
+		String sql ="select a.id,a.title,a.summary,a.read_status,a.create_time "
 		+" from hslg_user_letter a  "
 		+" where a.to_id='"+user_id+"' "
 		+ "order by a.create_time desc limit "+iStart+" , "+page_size;

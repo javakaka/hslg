@@ -675,6 +675,34 @@ public class ApiTest {
 	}
 	
 	/**
+	 *收货地址列表
+	 */
+	public static void queryUserDefaultAddress()
+	{
+//		String url ="http://localhost:8080/hslg/api/user/address/default.do";
+		String url ="http://120.25.253.240:8080/hslg/api/user/address/default.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			String json =  VOConvert.ivoToJson(ivo);
+			System.out.println("\n ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 *添加收货地址
 	 */
 	public static void addUserAddress()
@@ -859,8 +887,8 @@ public class ApiTest {
 	//分页查询用户收藏
 	public static void queryPageUserCollection()
 	{
-		String url ="http://localhost:8080/hslg/api/user/collection/list.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/user/collection/list.do";
+//		String url ="http://localhost:8080/hslg/api/user/collection/list.do";
+		String url ="http://120.25.253.240:8080/hslg/api/user/collection/list.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("user_id", "1");
@@ -893,6 +921,8 @@ public class ApiTest {
 		try {
 			ivo.set("user_id", "1");
 			ivo.set("goods_id", "1");
+			ivo.set("is_collect", "1");
+			ivo.set("is_collect", "0");
 			String json =  VOConvert.ivoToJson(ivo);
 			System.out.println("\n 加密前 ivo to json ====>>"+json);
 			//加密
@@ -964,12 +994,12 @@ public class ApiTest {
 	//分页查询商家分类
 	public static void queryGoodsPage()
 	{
-		String url ="http://localhost:8080/hslg/api/goods/profile/list.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/goods/profile/list.do";
+//		String url ="http://localhost:8080/hslg/api/goods/profile/list.do";
+		String url ="http://120.25.253.240:8080/hslg/api/goods/profile/list.do";
 		IVO ivo =new IVO();
 		try {
-			ivo.set("type_id", "1");
-			ivo.set("is_hot", "1");
+//			ivo.set("type_id", "1");
+//			ivo.set("is_hot", "1");
 //			ivo.set("team_buy", "1");
 			ivo.set("page", "1");
 			ivo.set("page_size", "10");
@@ -1021,8 +1051,8 @@ public class ApiTest {
 	//查询商家详情
 	public static void queryGoodsDetail()
 	{
-		String url ="http://localhost:8080/hslg/api/goods/profile/detail.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/goods/profile/detail.do";
+//		String url ="http://localhost:8080/hslg/api/goods/profile/detail.do";
+		String url ="http://120.25.253.240:8080/hslg/api/goods/profile/detail.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("id", "1");
@@ -2029,6 +2059,61 @@ public class ApiTest {
 			e.printStackTrace();
 		}
 	}
+	//分页查询便民信息
+	public static void queryCommonServiceTypePage()
+	{
+//		String url ="http://localhost:8080/hslg/api/convennient/commonservice/type/list.do";
+		String url ="http://120.25.253.240:8080/hslg/api/convennient/commonservice/type/list.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("page", "1");
+			ivo.set("page_size", "10");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//分页查询便民信息
+	public static void queryCommonServicePage()
+	{
+//		String url ="http://localhost:8080/hslg/api/convennient/commonservice/profile/list.do";
+		String url ="http://120.25.253.240:8080/hslg/api/convennient/commonservice/profile/list.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("page", "1");
+			ivo.set("page_size", "10");
+			ivo.set("type_id", "1");
+			String json =  VOConvert.ivoToJson(ivo);
+			
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	//查询分享的图片与标题
 	public static void queryShare()
 	{
@@ -2298,6 +2383,8 @@ public class ApiTest {
 //		checkGeographyFileVersion();
 //		收货地址列表
 //		queryUserAddressPaeg();
+//		查询默认收获地址
+//		queryUserDefaultAddress();
 //		添加收货地址
 //		addUserAddress();
 //		删除收货地址
@@ -2319,7 +2406,7 @@ public class ApiTest {
 //		查询商品分类
 //		queryGoodsType();
 //		分页查询商品
-//		queryGoodsPage();
+		queryGoodsPage();
 //		查询商品详情
 //		queryGoodsDetail();
 //		查询商品参数
@@ -2379,8 +2466,12 @@ public class ApiTest {
 //		indexPageQueryBroadcast();
 //		分页用户信息
 //		queryUserInfoPage();
-		queryUserInfoDetail();
-		System.out.println("\n==========request  end=============");
+//		queryUserInfoDetail();
+//		分页查询通用服务分类
+//		queryCommonServiceTypePage();
+//		分页查询通用服务
+//		queryCommonServicePage();
+//		System.out.println("\n==========request  end=============");
 	}
 	
 }

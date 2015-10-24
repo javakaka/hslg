@@ -92,13 +92,12 @@ public class UserCollectionService extends Service{
 	public Page queryPage() {
 		Page page = null;
 		Pageable pageable = (Pageable) row.get("pageable");
-		sql = "select * from "
+		String sql = "select * from "
 		+" ( "
-		+" select a.* ,b.c_name as collection_name,c.telephone,c.`name` as username "
+		+" select a.* ,b.name as goods_name,c.telephone,c.username "
 		+" from hslg_user_collection_goods a "
-		+" left join cxhl_shop b on a.c_id=b.id "
-		+" left join cxhl_users c on a.user_id=c.id "
-		+" where a.c_type='0' "
+		+" left join hslg_goods b on a.goods_id=b.id "
+		+" left join hslg_users c on a.user_id=c.id "
 		+" ) as tab  where 1=1 ";
 		String restrictions = addRestrictions(pageable);
 		String orders = addOrders(pageable);
@@ -106,11 +105,10 @@ public class UserCollectionService extends Service{
 		sql += orders;
 		String countSql = "select count(*) from "
 				+" ( "
-				+" select a.* ,b.c_name as collection_name,c.telephone,c.`name` as username "
+				+" select a.* ,b.name as goods_name,c.telephone,c.username "
 				+" from hslg_user_collection_goods a "
-				+" left join cxhl_shop b on a.c_id=b.id "
-				+" left join cxhl_users c on a.user_id=c.id "
-				+" where a.c_type='0' "
+				+" left join hslg_goods b on a.goods_id=b.id "
+				+" left join hslg_users c on a.user_id=c.id "
 				+" ) as tab  where 1=1 ";
 		countSql += restrictions;
 		countSql += orders;
@@ -133,7 +131,7 @@ public class UserCollectionService extends Service{
 		DataSet ds =new DataSet();
 		int start =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
 		String sSql ="select a.id,a.goods_id,a.create_time , "
-				+" b.name as goods_name,b.left_num,b.sale_num,"
+				+" b.name as goods_name,b.left_num,b.sale_num,b.is_coupon, "
 				+" b.raw_price,b.coupon_price,d.file_path "
 				+" from hslg_user_collection_goods a " 
 				+" left join hslg_goods b on a.goods_id=b.id "

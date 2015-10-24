@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import com.ezcloud.framework.page.jdbc.Page;
 import com.ezcloud.framework.page.jdbc.Pageable;
 import com.ezcloud.framework.service.Service;
+import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.vo.DataSet;
 import com.ezcloud.framework.vo.Row;
 import com.ezcloud.utility.DateUtil;
@@ -53,6 +54,48 @@ public class GoodsJudgementService extends Service{
 				+" where a.goods_id ='"+goods_id+"' "
 				+" order by a.create_time desc ";
 		ds =queryDataSet(sSql);
+		return ds;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(value="jdbcTransactionManager",readOnly = true)
+	public DataSet findPageByGoodsId(String goods_id,String page,String page_size)
+	{
+		int iStart =(Integer.parseInt(page) -1)*Integer.parseInt(page_size);
+		DataSet ds =new DataSet();
+		String sSql ="select a.*,c.`name`,c.telephone,c.avatar from hslg_goods_judgement a "
+				+" left join hslg_users c on a.user_id =c.id "
+				+" where a.goods_id ='"+goods_id+"' "
+				+" order by a.create_time desc limit "+iStart+" ,"+page_size;
+		ds =queryDataSet(sSql);
+		String name_lable ="";
+		for( int i=0;i<ds.size(); i++ )
+		{
+			Row temp =(Row)ds.get(i);
+			String name =temp.getString("name","");
+			String telephone =temp.getString("telephone","");
+			if(!StringUtils.isEmptyOrNull(name))
+			{
+				name_lable =name.substring(0,1)+"***";
+				if(name.length() > 1)
+				{
+					name_lable +=name.substring(name.length()-1,name.length());
+				}
+			}
+			else
+			{
+				if(! StringUtils.isEmptyOrNull(telephone))
+				{
+					name_lable =telephone.substring(0,1)+"***"+telephone.substring(telephone.length()-1,telephone.length());
+				}
+				else
+				{
+					name_lable ="***";
+				}
+			}
+			temp.put("name", name_lable);
+			ds.set(i, temp);
+		}
 		return ds;
 	}
 	
