@@ -86,13 +86,16 @@ $().ready(function() {
 					<input type="checkbox" id="selectAll" />
 				</th>
 				<th>
+					<a href="javascript:;" class="sort" name="ICON_URL">标题图片</a>
+				</th>
+				<th>
 					<a href="javascript:;" class="sort" name="TITLE">标题</a>
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="STATE">状态</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="ICON_URL">标题图片</a>
+					<a href="javascript:;" class="sort" name="IS_TOP">是否置顶</a>
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="CREATE_TIME">发布时间</a>
@@ -105,6 +108,9 @@ $().ready(function() {
 				<tr>
 					<td>
 						<input type="checkbox" name="ids" value="${row.ID}" />
+					</td>
+					<td>
+						<img src="<%=imgBasePath%>${row.ICON_URL}" alt="${row.TITLE}" style="width:200px;height:100px;" />
 					</td>
 					<td>
 						<span title="${row.TITLE}">${row.TITLE}</span>
@@ -123,7 +129,17 @@ $().ready(function() {
 						</c:choose>
 					</td>
 					<td>
-						<img src="<%=imgBasePath%>${row.ICON_URL}" alt="${row.TITLE}" style="width:200px;height:100px;" />
+						<c:choose>
+							<c:when test="${row.IS_TOP ==0}">
+								否
+							</c:when>
+							<c:when test="${row.STATE ==1}">
+								是
+							</c:when>
+							<c:otherwise>
+								--
+							</c:otherwise>
+						</c:choose>
 					</td>
 					<td>
 						${row.CREATE_TIME}

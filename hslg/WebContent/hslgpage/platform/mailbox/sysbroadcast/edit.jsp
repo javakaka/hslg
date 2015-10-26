@@ -121,6 +121,32 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
+					<span class="requiredField">*</span>是否置顶:
+				</th>
+				<td>
+					<select id="IS_TOP" name="IS_TOP" style="width:190px;">
+					<c:choose>
+							<c:when test="${row.IS_TOP ==0}">
+								<option value="">请选择...</option>
+								<option value="0" selected>否</option>
+								<option value="1">是</option>
+							</c:when>
+							<c:when test="${row.STATE ==1}">
+								<option value="">请选择...</option>
+								<option value="0" >否</option>
+								<option value="1" selected>是</option>
+							</c:when>
+							<c:otherwise>
+								<option value="" selected>请选择...</option>
+								<option value="1" >否</option>
+								<option value="2">是</option>
+							</c:otherwise>
+						</c:choose>
+						</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
 					<span class="requiredField">*</span>标题图片:
 				</th>
 				<td>

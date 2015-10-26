@@ -28,7 +28,18 @@
         <!-- 多个拦截器,顺序执行 -->  
         <mvc:interceptor>  
            <mvc:mapping path="/api/**/*.do" /><!-- 如果不配置或/*,将拦截所有的Controller -->  
-           <bean id="apiInterceptor" class="com.hslg.interceptor.ApiInterceptor" />  
+           <bean id="apiInterceptor" class="com.hslg.interceptor.ApiInterceptor">  
+	           <property name="allowUrls">  
+	            <list>  
+	              <!-- 如果请求中包含以下路径，则不进行拦截 -->  
+	              <value>/api/pay/weixin/app/notify.do</value>
+	              <value>/api/pay/alipay/app/notify.do</value>
+	              <value>/api/pay/alipay/app/notifyLoveDonate.do</value>
+	              <value>/api/pay/alipay/app/notifyProjectDonate.do</value>
+	              <value>/api/pay/alipay/app/notifyArchiveDonate.do</value>
+	            </list>  
+	          </property>  
+           </bean> 
         </mvc:interceptor>
     </mvc:interceptors> 
 	 <!--通用视图解析器-->

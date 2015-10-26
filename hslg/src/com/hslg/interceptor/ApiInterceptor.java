@@ -35,6 +35,11 @@ public class ApiInterceptor  implements HandlerInterceptor{
            this.mappingURL = mappingURL;    
    }   
     
+    public String[] allowUrls;
+	public void setAllowUrls(String[] allowUrls)
+	{  
+		this.allowUrls = allowUrls;  
+	}  
 
 	/**
 	 * 将请求的post数据解析到请求对象
@@ -103,6 +108,18 @@ public class ApiInterceptor  implements HandlerInterceptor{
 		String url=request.getRequestURL().toString();   
 		logger.info("\r\n/*--------------------new request----------------------*/");
 		logger.info("1、preHandle-->>url-->>"+url);
+		String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");
+        if(null != allowUrls && allowUrls.length >=1 )
+        {
+        	for(String allowUrl : allowUrls)
+        	{    
+        		if(requestUrl.contains(allowUrl))
+        		{
+        			logger.info("this uri do not need filter-->>"+allowUrl);
+        			return true;
+        		}    
+        	}  
+        }  
 		IVO ivo =null;
 		try{
 			ivo =proccessRequest(request);

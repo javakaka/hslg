@@ -151,10 +151,11 @@ public class OrderService extends Service{
 	{
 		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
 		DataSet ds =new DataSet();
-		String sSql ="select a.id,a.state,a.user_id,a.create_time,a.order_no,a.transfer_state,b.goods_id,b.goods_num,b.goods_price,fu.file_path from hslg_order a "
+		String sSql ="select a.id,a.state,a.user_id,a.create_time,a.order_no,a.transfer_state,b.goods_id,b.goods_num,b.goods_price,fu.file_path ,d.name as goods_name,d.unit from hslg_order a "
 		+" left join hslg_order_item b on b.order_id=a.id "
 		+" left join file_attach_control fc on fc.DEAL_CODE=b.goods_id and fc.DEAL_TYPE='goods_icon' " 
 		+" left join file_attach_upload fu on fc.CONTROL_ID=fu.CONTROL_ID "
+		+" left join hslg_goods d on b.goods_id=d.id "
 		+" where a.user_id='"+user_id+"' " ;
 		if( !StringUtils.isEmptyOrNull(state))
 		{
@@ -173,9 +174,9 @@ public class OrderService extends Service{
 			{
 				Row row =(Row)ds.get(i);
 				String file_path =row.getString("file_path","");
-				if(StringUtils.isEmptyOrNull(file_path))
+				if(!StringUtils.isEmptyOrNull(file_path))
 				{
-					iPos =file_path.indexOf("resources");
+					iPos =file_path.indexOf("/resources");
 					if(iPos != -1)
 					{
 						file_path =file_path.substring(iPos,file_path.length());

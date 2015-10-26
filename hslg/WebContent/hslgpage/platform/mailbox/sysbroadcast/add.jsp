@@ -103,6 +103,17 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
+					<span class="requiredField">*</span>是否置顶:
+				</th>
+				<td>
+					<select id="STATE" name="IS_TOP" style="width:190px;">
+						<option value="0" selected>否</option>
+						<option value="1">是</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
 					<span class="requiredField">*</span>标题图片:
 				</th>
 				<td>

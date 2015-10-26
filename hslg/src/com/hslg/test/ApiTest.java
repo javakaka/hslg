@@ -1254,10 +1254,11 @@ public class ApiTest {
 	//用户分页查询自己的订单
 	public static void queryUserOrder()
 	{
-		String url ="http://localhost:8080/hslg/api/order/profile/list.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/order/profile/list.do";
+//		String url ="http://localhost:8080/hslg/api/order/profile/list.do";
+		String url ="http://120.25.253.240:8080/hslg/api/order/profile/list.do";
 		IVO ivo =new IVO();
 		try {
+			ivo.set("user_id", "4");
 			ivo.set("user_id", "1");
 			ivo.set("state", "");
 			ivo.set("page", "1");
@@ -1572,12 +1573,12 @@ public class ApiTest {
 	//微信app支付
 	public static void alipayAppPay()
 	{
-		String url ="http://localhost:8080/hslg/api/pay/alipay/app/validate.do";
-//		String url ="http://120.25.253.240:8080/hslg/api/pay/alipay/app/validate.do";
+//		String url ="http://localhost:8080/hslg/api/pay/alipay/app/validate.do";
+		String url ="http://120.25.253.240:8080/hslg/api/pay/alipay/app/validate.do";
 		IVO ivo =new IVO();
 		try {
-			ivo.set("user_id", "1");
-			ivo.set("order_id", "1");
+			ivo.set("user_id", "4");
+			ivo.set("order_id", "8");
 			ivo.set("service_name", "hslgAlipayAppPayService");
 			String json =  VOConvert.ivoToJson(ivo);
 			
@@ -2247,8 +2248,8 @@ public class ApiTest {
 	//首页查询系统广播
 	public static void indexPageQueryBroadcast()
 	{
-		String url ="http://localhost:8080/hslg/api/mailbox/sysbroadcast/top-page-broadcast.do";
-//			String url ="http://120.25.253.240:8080/hslg/api/mailbox/sysbroadcast/top-page-broadcast.do";
+//		String url ="http://localhost:8080/hslg/api/mailbox/sysbroadcast/top-page-broadcast.do";
+			String url ="http://120.25.253.240:8080/hslg/api/mailbox/sysbroadcast/top-page-broadcast.do";
 		IVO ivo =new IVO();
 		try {
 			String json =  VOConvert.ivoToJson(ivo);
@@ -2406,7 +2407,7 @@ public class ApiTest {
 //		查询商品分类
 //		queryGoodsType();
 //		分页查询商品
-		queryGoodsPage();
+//		queryGoodsPage();
 //		查询商品详情
 //		queryGoodsDetail();
 //		查询商品参数
@@ -2463,7 +2464,7 @@ public class ApiTest {
 //		queryConvennientInfoPage();
 //		首页搜索商品
 //		IndexPageSearchGoods();
-//		indexPageQueryBroadcast();
+		indexPageQueryBroadcast();
 //		分页用户信息
 //		queryUserInfoPage();
 //		queryUserInfoDetail();

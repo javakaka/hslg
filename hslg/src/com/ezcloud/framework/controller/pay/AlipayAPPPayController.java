@@ -169,7 +169,7 @@ public class AlipayAPPPayController extends ApiBaseController{
 				Row updateRow =new Row();
 				updateRow.put("id", orderRow.getString("id"));
 				updateRow.put("state", "2");//0待付款，1已付款未到账，2已到账待收货，3已收货4申请退款5退款未到账，6已退款
-				updateRow.put("pay_type", "2");//1微信支付2支付宝支付
+				updateRow.put("pay_type", "2");//1账户余额支付2支付宝支付3银行卡支付4货到付款
 				updateRow.put("api_order_no", trade_no);
 				updateRow.put("pay_finish_time", gmt_payment);
 				String already_paid_money =orderRow.getString("paid_money","0");
@@ -182,7 +182,8 @@ public class AlipayAPPPayController extends ApiBaseController{
 				double dnew_paid_fee =dalready_paid_money+dtotal_fee;
 				String new_paid_fee =String.valueOf(dnew_paid_fee);
 				new_paid_fee =NumberUtils.getTwoDecimal(new_paid_fee);
-				updateRow.put("paid_money", new_paid_fee);
+//				updateRow.put("pay_money",  new_paid_fee);
+				updateRow.put("pay_money",  new_paid_fee);
 				int rowNum =orderService.update(updateRow);
 				if(rowNum >0)
 				{
