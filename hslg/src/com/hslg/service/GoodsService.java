@@ -214,7 +214,7 @@ public class GoodsService extends Service{
 		+" a.total_num,a.left_num,a.sale_num,a.hot,a.team_buy,a.state,a.create_time,b.type_name from hslg_goods a "
 		+" left join hslg_goods_type b on a.type_id=b.id "
 		+" ) as tab  "
-		+" where 1=1 ";
+		+" where 1=1 and state != '-1' ";
 		String restrictions = addRestrictions(pageable);
 		String orders = addOrders(pageable);
 		sql += restrictions;
@@ -224,7 +224,7 @@ public class GoodsService extends Service{
 				+" a.total_num,a.left_num,a.sale_num,a.hot,a.team_buy,a.state,a.create_time,b.type_name from hslg_goods a "
 				+" left join hslg_goods_type b on a.type_id=b.id "
 				+" ) as tab  "
-				+" where 1=1 ";
+				+" where 1=1 and state != '-1' ";
 		countSql += restrictions;
 		countSql += orders;
 		long total = count(countSql);
@@ -400,7 +400,7 @@ public class GoodsService extends Service{
 				}
 				id += "'" + String.valueOf(ids[i]) + "'";
 			}
-			sql = "delete from hslg_goods where id in(" + id + ")";
+			sql = "update hslg_goods set state='-1' where  id in(" + id + ")";
 			update(sql);
 		}
 	}

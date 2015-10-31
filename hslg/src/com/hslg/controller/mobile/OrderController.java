@@ -120,6 +120,12 @@ public class OrderController extends BaseController {
 		{
 			order_message ="";
 		}
+		String order_type =ivo.getString("order_type","");
+		if(StringUtils.isEmptyOrNull(order_type))
+		{
+			ovo =new OVO(-1,"订单类型不能为空，1在线支付2货到付款3水票支付","订单类型不能为空，1在线支付2货到付款3水票支付");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
 		//订单项目列表
 		DataSet item_list =(DataSet)ivo.get("items");
 		String error_msg =validateOrderItems(item_list);
@@ -159,6 +165,7 @@ public class OrderController extends BaseController {
 		}
 		order_no =order_no+order_num;
 		orderRow.put("order_no", order_no);
+		orderRow.put("order_type", order_type);
 		orderService.insert(orderRow);
 		String order_id =orderRow.getString("id","");
 		//保存订单项到数据库、减去库存

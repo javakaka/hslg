@@ -122,7 +122,7 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
-					状态:
+					支付状态:
 				</th>
 				<td>
 					<select id="STATE" name ="STATE" style="width:190px;" >
@@ -134,22 +134,22 @@ $().ready(function() {
 							<option value="3" >已到账</option>
 						</c:when>
 						<c:when test="${row.STATE == 1}">
-							<option value="0" selected>已退货</option>
-							<option value="1" >待付款</option>
+							<option value="0" >已退货</option>
+							<option value="1" selected>待付款</option>
 							<option value="2" >已付款</option>
 							<option value="3" >已到账</option>
 						</c:when>
 						<c:when test="${row.STATE == 2}">
-							<option value="0" selected>已退货</option>
+							<option value="0" >已退货</option>
 							<option value="1" >待付款</option>
-							<option value="2" >已付款</option>
+							<option value="2" selected>已付款</option>
 							<option value="3" >已到账</option>
 						</c:when>
 						<c:when test="${row.STATE == 3}">
-							<option value="0" selected>已退货</option>
+							<option value="0" >已退货</option>
 							<option value="1" >待付款</option>
 							<option value="2" >已付款</option>
-							<option value="3" >已到账</option>
+							<option value="3" selected>已到账</option>
 						</c:when>
 						<c:otherwise>
 							<option value="" selected>请选择...</option>
@@ -157,6 +157,38 @@ $().ready(function() {
 							<option value="1" >待付款</option>
 							<option value="2" >已付款</option>
 							<option value="3" >已到账</option>
+						</c:otherwise>
+					</c:choose>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					配送状态:
+				</th>
+				<td>
+					<select id="TRANSFER_STATE" name ="TRANSFER_STATE" style="width:190px;" >
+					<c:choose>
+						<c:when test="${row.TRANSFER_STATE == 0}">
+							<option value="0" selected>未配送</option>
+							<option value="1" >配送中</option>
+							<option value="2" >配送完成</option>
+						</c:when>
+						<c:when test="${row.TRANSFER_STATE == 1}">
+							<option value="0" >未配送</option>
+							<option value="1" selected>配送中</option>
+							<option value="2" >配送完成</option>
+						</c:when>
+						<c:when test="${row.TRANSFER_STATE == 2}">
+							<option value="0" >未配送</option>
+							<option value="1" >配送中</option>
+							<option value="2" selected>配送完成</option>
+						</c:when>
+						<c:otherwise>
+							<option value="" selected>请选择...</option>
+							<option value="0" >未配送</option>
+							<option value="1" >配送中</option>
+							<option value="2" >配送完成</option>
 						</c:otherwise>
 					</c:choose>
 					</select>

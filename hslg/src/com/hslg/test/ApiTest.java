@@ -1222,6 +1222,7 @@ public class ApiTest {
 			ivo.set("money", "137.60");
 			ivo.set("transfer_fee", "0");
 			ivo.set("order_message", "请尽快发货");	
+			ivo.set("order_type", "3");	//1在线支付2货到付款3水票支付
 			DataSet items =new DataSet();
 			Row irow =new Row();
 			irow.put("goods_id", "1");
@@ -2419,7 +2420,7 @@ public class ApiTest {
 //		创建订单
 //		createOrder();
 //		用户分页查询自己的订单
-//		queryUserOrder();
+		queryUserOrder();
 //		订单项
 //		queryOrderItems();
 //		微信app支付
@@ -2464,7 +2465,7 @@ public class ApiTest {
 //		queryConvennientInfoPage();
 //		首页搜索商品
 //		IndexPageSearchGoods();
-		indexPageQueryBroadcast();
+//		indexPageQueryBroadcast();
 //		分页用户信息
 //		queryUserInfoPage();
 //		queryUserInfoDetail();

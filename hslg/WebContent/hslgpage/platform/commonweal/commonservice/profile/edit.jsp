@@ -94,8 +94,8 @@ $().ready(function() {
 				</th>
 				<td>
 					<select id="TYPE_ID" name="TYPE_ID" style="width:190px;" maxlength="200" >
-						<c:forEach items="${type_list}" var="item" varStatus="status">
 							<option value="" >请选择...</option>
+						<c:forEach items="${type_list}" var="item" varStatus="status">
 							<c:choose>
 							<c:when test="${item.ID == row.ID}">
 								<option value="${item.ID }" selected>${item.NAME }</option>

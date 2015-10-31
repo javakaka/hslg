@@ -199,6 +199,9 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="TELEPHONE">用户手机</a>
 				</th>
 				<th>
+					<a href="javascript:;" class="sort" name="ORDER_TYPE">订单类型</a>
+				</th>
+				<th>
 					<a href="javascript:;" class="sort" name="MONEY">订单金额</a>
 				</th>
 				<th>
@@ -213,7 +216,10 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="PAY_TYPE">支付方式</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="STATE">状态</a>
+					<a href="javascript:;" class="sort" name="STATE">支付状态</a>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="TRANSFER_STATE">配送状态</a>
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="CREATE_TIME">创建时间</a>
@@ -236,17 +242,21 @@ $().ready(function() {
 					<td>
 						<span title="${row.TELEPHONE}">${row.TELEPHONE}</span>
 					</td>
+					
+					<td>
+						<c:choose>
+							<c:when test="${row.ORDER_TYPE == 1}">在线支付</c:when>
+							<c:when test="${row.ORDER_TYPE == 2}">货到付款</c:when>
+							<c:when test="${row.ORDER_TYPE == 3}">水票支付</c:when>
+							<c:otherwise>--</c:otherwise>
+						</c:choose>
+					</td>
 					<td>
 						<span title="${row.MONEY}">${row.MONEY}</span>
 					</td>
 					<td>
 						<span title="${row.PAY_MONEY}">${row.PAY_MONEY}</span>
 					</td>
-					<!--
-					<td>
-						<span title="${row.RETURN_MONEY}">${row.RETURN_MONEY}</span>
-					</td>
-					-->
 					<td>
 						<c:choose>
 							<c:when test="${row.PAY_TYPE == 1}">账户余额支付</c:when>
@@ -265,6 +275,14 @@ $().ready(function() {
 							<c:when test="${row.STATE == 4}">申请退款</c:when>
 							<c:when test="${row.STATE == 5}">退款未到账</c:when>
 							<c:when test="${row.STATE == 6}">已退款</c:when>
+							<c:otherwise>--</c:otherwise>
+						</c:choose>
+					</td>
+					<td>
+						<c:choose>
+							<c:when test="${row.TRANSFER_STATE == 0}">未配送</c:when>
+							<c:when test="${row.TRANSFER_STATE == 1}">配送中</c:when>
+							<c:when test="${row.TRANSFER_STATE == 2}">配送完成</c:when>
 							<c:otherwise>--</c:otherwise>
 						</c:choose>
 					</td>

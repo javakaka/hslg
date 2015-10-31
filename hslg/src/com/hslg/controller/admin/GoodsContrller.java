@@ -91,6 +91,13 @@ public class GoodsContrller extends BaseController
   @ResponseBody
   public ResponseVO saveDetail(@RequestParam HashMap<String, String> map, RedirectAttributes redirectAttributes) throws Exception { ResponseVO ovo = new ResponseVO();
 	  Row row = MapUtils.convertMaptoRowWithoutNullField(map);
+	  String detail =row.getString("detail","");
+	  if(! StringUtils.isEmptyOrNull(detail))
+	  {
+		  detail =detail.replace("'", "''");
+		  row.put("detail", detail);
+	  }
+	  
 	  int rowNum = 0;
 	  rowNum = goodsService.update(row);
 	  if (rowNum > 0)
