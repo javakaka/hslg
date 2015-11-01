@@ -2420,7 +2420,7 @@ public class ApiTest {
 //		创建订单
 //		createOrder();
 //		用户分页查询自己的订单
-		queryUserOrder();
+//		queryUserOrder();
 //		订单项
 //		queryOrderItems();
 //		微信app支付
@@ -2470,7 +2470,7 @@ public class ApiTest {
 //		queryUserInfoPage();
 //		queryUserInfoDetail();
 //		分页查询通用服务分类
-//		queryCommonServiceTypePage();
+		queryCommonServiceTypePage();
 //		分页查询通用服务
 //		queryCommonServicePage();
 //		System.out.println("\n==========request  end=============");

@@ -94,6 +94,12 @@ public class ConvenientLoveController extends BaseController {
 			return AesUtil.encode(VOConvert.ovoToJson(ovo));
 		}
 		orderRow =MapUtils.convertMaptoRowWithoutNullField(orderRow);
+		String pay_state =orderRow.getString("pay_state","-1");
+		if(pay_state.equals("2"))
+		{
+			OVO ovo =new OVO(0,"通知服务器成功","通知服务器成功");
+			return AesUtil.encode(VOConvert.ovoToJson(ovo));
+		}
 		orderRow.put("pay_state", "1");
 		commonwealLoveRecordService.update(orderRow);
 		OVO ovo =new OVO(0,"通知服务器成功","通知服务器成功");

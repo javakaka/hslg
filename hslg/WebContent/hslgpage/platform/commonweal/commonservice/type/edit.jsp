@@ -88,6 +88,18 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
+					<span class="requiredField">*</span>图标:
+				</th>
+				<td>
+					<input type="text" id="ICON_URL" name="ICON_URL" class="text" maxlength="200" readonly value="${row.ICON_URL }"/>
+					<td>
+					<input type="button" id="uploadButton_0" value="上传" />
+					<img src="${row.ICON_URL }" style="width:200px;height:200px;" id="sumbImg"/>
+				</td>
+				</td>
+			</tr>
+			<tr>
+				<th>
 					<span class="requiredField">*</span>排序:
 				</th>
 				<td>

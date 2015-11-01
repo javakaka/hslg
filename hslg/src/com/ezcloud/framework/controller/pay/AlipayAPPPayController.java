@@ -254,7 +254,7 @@ public class AlipayAPPPayController extends ApiBaseController{
 		String gmt_payment =request.getParameter("gmt_payment");
 		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 		if(AlipayNotify.verify(params)){//验证成功
-			logger.info("支付宝的通知返回参数验证成功");
+			logger.info("支付宝的通知返回参数验证成功"+"[out_trade_no:"+out_trade_no+"]"+"[trade_no:"+trade_no+"]"+"[trade_status:"+trade_status+"]"+"[total_fee:"+total_fee+"]"+"[gmt_payment:"+gmt_payment+"]");
 			//////////////////////////////////////////////////////////////////////////////////////////
 			//请在这里加上商户的业务逻辑程序代码
 			//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
@@ -355,7 +355,7 @@ public class AlipayAPPPayController extends ApiBaseController{
 		String gmt_payment =request.getParameter("gmt_payment");
 		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 		if(AlipayNotify.verify(params)){//验证成功
-			logger.info("支付宝的通知返回参数验证成功");
+			logger.info("支付宝的通知返回参数验证成功"+"[out_trade_no:"+out_trade_no+"]"+"[trade_no:"+trade_no+"]"+"[trade_status:"+trade_status+"]"+"[total_fee:"+total_fee+"]"+"[gmt_payment:"+gmt_payment+"]");
 			//////////////////////////////////////////////////////////////////////////////////////////
 			//请在这里加上商户的业务逻辑程序代码
 			//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
@@ -456,7 +456,7 @@ public class AlipayAPPPayController extends ApiBaseController{
 		String gmt_payment =request.getParameter("gmt_payment");
 		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 		if(AlipayNotify.verify(params)){//验证成功
-			logger.info("支付宝的通知返回参数验证成功");
+			logger.info("支付宝的通知返回参数验证成功"+"[out_trade_no:"+out_trade_no+"]"+"[trade_no:"+trade_no+"]"+"[trade_status:"+trade_status+"]"+"[total_fee:"+total_fee+"]"+"[gmt_payment:"+gmt_payment+"]");
 			//////////////////////////////////////////////////////////////////////////////////////////
 			//请在这里加上商户的业务逻辑程序代码
 			//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
@@ -466,6 +466,7 @@ public class AlipayAPPPayController extends ApiBaseController{
 				//如果有做过处理，不执行商户的业务程序
 				//判断订单是否存在
 				Row orderRow =commonwealArchiveRecordService.findByOrderNo(out_trade_no);
+				logger.info("判断订单是否存在－－－－－－－－》》"+orderRow);
 				if(orderRow == null)
 				{
 					logger.info("订单号不存在:,[order_no]:"+out_trade_no);
@@ -474,6 +475,7 @@ public class AlipayAPPPayController extends ApiBaseController{
 				}
 				//判断订单是否已正确处理订单状态，如果已处理，则直接返回处理正确响应结果给微信，否则，更改订单状态
 				String state =orderRow.getString("pay_state","");
+				logger.info("判断订单是否已正确处理订单状态－－－－－－－－》》"+state);
 				if(state.equals("2"))
 				{
 					logger.info("订单号已通过支付宝支付成功:,[order_no]:"+out_trade_no);
@@ -487,7 +489,8 @@ public class AlipayAPPPayController extends ApiBaseController{
 				updateRow.put("pay_order_no", trade_no);
 				updateRow.put("pay_finish_time", gmt_payment);
 				updateRow.put("money", total_fee);
-				int rowNum =commonwealLoveRecordService.update(updateRow);
+				int rowNum =commonwealArchiveRecordService.update(updateRow);
+				logger.info("处理成功－－－－－－－－》》"+updateRow);
 				if(rowNum >0)
 				{
 					response.getWriter().print("success");
