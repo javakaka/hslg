@@ -108,7 +108,7 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
-					<span class="requiredField">*</span>简介:
+					<span class="requiredField">*</span>资助计划:
 				</th>
 				<td>
 					<textarea id="SUMMARY" name="SUMMARY" rows="5" cols="50"></textarea>
@@ -146,8 +146,8 @@ $().ready(function() {
 				</th>
 				<td>
 					<select id="STATUS" name="STATE" style="width:190px;" maxlength="200" >
-						<option value="1" selected>进行中</option>
-						<option value="0" >已结束</option>
+						<option value="1" selected>资助中</option>
+						<option value="0" >资助完成</option>
 					</select>
 				</td>
 			</tr>

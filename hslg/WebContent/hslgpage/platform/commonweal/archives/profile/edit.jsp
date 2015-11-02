@@ -111,7 +111,7 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
-					<span class="requiredField">*</span>简介:
+					<span class="requiredField">*</span>资助计划:
 				</th>
 				<td>
 					<textarea id="SUMMARY" name="SUMMARY" rows="5" cols="50">${row.SUMMARY}</textarea>
@@ -127,7 +127,7 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
-					<span class="requiredField">*</span>捐款次数:
+					<span class="requiredField">*</span>捐款来源:
 				</th>
 				<td>
 					<input type="text" id="DONATION_NUM" name="DONATION_NUM" class="text" maxlength="200" value="${row.DONATION_NUM}"/>
@@ -135,7 +135,7 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
-					<span class="requiredField">*</span>捐款金额:
+					<span class="requiredField">*</span>已资助金额:
 				</th>
 				<td>
 					<input type="text" id="DONATION_MONEY" name="DONATION_MONEY" class="text" maxlength="200" value="${row.DONATION_MONEY}"/>
@@ -149,12 +149,12 @@ $().ready(function() {
 					<select id="STATE" name="STATE" style="width:190px;" maxlength="200" >
 						<c:choose>
 							<c:when test="${row.STATE == '1'}">
-								<option value="1" selected>进行中</option>
-								<option value="0" >已结束</option>
+								<option value="1" selected>资助中</option>
+								<option value="0" >资助完成</option>
 							</c:when>
 							<c:when test="${row.STATE == '0'}">
-								<option value="1" >进行中</option>
-								<option value="0" selected>已结束</option>
+								<option value="1" >资助中</option>
+								<option value="0" selected>资助完成</option>
 							</c:when>
 							<c:otherwise>--</c:otherwise>
 						</c:choose>

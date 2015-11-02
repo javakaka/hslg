@@ -95,16 +95,16 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="SCHOOL">学校</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="SUMMARY">简介</a>
+					<a href="javascript:;" class="sort" name="SUMMARY">资助计划</a>
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="ADDRESS">地址</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="DONATION_NUM">捐款次数</a>
+					<a href="javascript:;" class="sort" name="DONATION_NUM">资助来源</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="DONATION_MONEY">捐款金额</a>
+					<a href="javascript:;" class="sort" name="DONATION_MONEY">已资助金额</a>
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="STATE">状态</a>
@@ -141,8 +141,8 @@ $().ready(function() {
 					</td>
 					<td>
 						<c:choose>
-							<c:when test="${row.STATE == '1'}">进行中</c:when>
-							<c:when test="${row.STATE == '0'}">已结束</c:when>
+							<c:when test="${row.STATE == '1'}">资助中</c:when>
+							<c:when test="${row.STATE == '0'}">资助完成</c:when>
 							<c:otherwise>--</c:otherwise>
 						</c:choose>
 					</td>
