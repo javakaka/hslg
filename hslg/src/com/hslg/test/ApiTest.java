@@ -2036,8 +2036,8 @@ public class ApiTest {
 	//分页查询便民信息
 	public static void queryConvennientInfoPage()
 	{
-//		String url ="http://localhost:8080/hslg/api/convennient/info/profile/list.do";
-			String url ="http://120.25.253.240:8080/hslg/api/convennient/info/profile/list.do";
+		String url ="http://localhost:8080/hslg/api/convennient/info/profile/list.do";
+//			String url ="http://120.25.253.240:8080/hslg/api/convennient/info/profile/list.do";
 		IVO ivo =new IVO();
 		try {
 			ivo.set("page", "1");
@@ -2462,7 +2462,7 @@ public class ApiTest {
 //		查询善小财务汇总
 //		queryFinance();
 //		分页查询便民信息
-//		queryConvennientInfoPage();
+		queryConvennientInfoPage();
 //		首页搜索商品
 //		IndexPageSearchGoods();
 //		indexPageQueryBroadcast();
@@ -2470,7 +2470,7 @@ public class ApiTest {
 //		queryUserInfoPage();
 //		queryUserInfoDetail();
 //		分页查询通用服务分类
-		queryCommonServiceTypePage();
+//		queryCommonServiceTypePage();
 //		分页查询通用服务
 //		queryCommonServicePage();
 //		System.out.println("\n==========request  end=============");

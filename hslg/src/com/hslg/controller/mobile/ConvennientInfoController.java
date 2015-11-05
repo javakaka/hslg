@@ -35,7 +35,8 @@ public class ConvennientInfoController extends BaseController {
 		logger.info("ConvennientInfo list ");
 		String page =ivo.getString("page","1");
 		String page_size =ivo.getString("page_size","10");
-		DataSet ds =convenientInfoService.list(page,page_size);
+		String type_id =ivo.getString("type_id","10");
+		DataSet ds =convenientInfoService.list(page,page_size,type_id);
 		OVO ovo =new OVO(0,"","");
 		ovo.set("list", ds);
 		return AesUtil.encode(VOConvert.ovoToJson(ovo));

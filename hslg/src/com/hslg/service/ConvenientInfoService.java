@@ -101,12 +101,17 @@ public class ConvenientInfoService extends Service{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public DataSet list(String page, String page_size)
+	public DataSet list(String page, String page_size,String type_id)
 	{
 		int iStart =(Integer.parseInt(page)-1)*Integer.parseInt(page_size);
 		DataSet ds =new DataSet();
-		String sql ="select id,type_id,name,address,link_tel,link_name,icon_url from hslg_convenient_info "
-				+" order by create_time desc  limit "+iStart+" , "+page_size ;
+		String sql ="select id,type_id,name,address,link_tel,link_name, "
+				+ " icon_url from hslg_convenient_info ";
+		if(! StringUtils.isEmptyOrNull(type_id))
+		{
+			sql +=" where type_id='"+type_id+"' ";
+		}
+				sql +=" order by create_time desc  limit "+iStart+" , "+page_size ;
 		ds =queryDataSet(sql);
 		if(ds != null )
 		{
