@@ -4,7 +4,7 @@ import com.ezcloud.framework.util.FieldUtil;
 import com.ezcloud.framework.util.Md5Util;
 import com.ezcloud.framework.util.StringUtils;
 import com.ezcloud.framework.util.XmlUtil;
-import com.ezcloud.utility.MD5;
+import com.ezcloud.framework.vo.Row;
 
 public class Unifiedorder {
 
@@ -201,13 +201,16 @@ public class Unifiedorder {
 	/**
 	 * 计算签名
 	 */
-	public void calculateSign(Unifiedorder object,String secret)
+	public Row calculateSignAndXml(Unifiedorder object,String secret)
 	{
-		String sign ="";
-		String urlPramStr =FieldUtil.getObjectNotEmptyFieldsUrlParamsStr(object);
-		urlPramStr =FieldUtil.appendFiledToUrlParam(urlPramStr, "key", secret);
-		sign =Md5Util.Md5(urlPramStr);
+		Row row =FieldUtil.getObjectNotEmptyFieldsUrlParamsStr(object,secret);
+		String sign =row.getString("sign","");
+		String xml =row.getString("xml","");
+		String url =row.getString("url","");
+//		urlPramStr =FieldUtil.appendFiledToUrlParam(urlPramStr, "key", secret);
+//		sign =Md5Util.get32UppercaseMD5(urlPramStr);
 		object.setSign(sign);
+		return row;
 	}
 	
 	

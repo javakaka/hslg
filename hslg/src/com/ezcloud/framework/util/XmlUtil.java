@@ -1,6 +1,22 @@
 package com.ezcloud.framework.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
@@ -40,4 +56,45 @@ public class XmlUtil {
 		xstream.alias("xml", obj.getClass());  
 		return xstream.toXML(obj);  
 	}   
+	
+	public static HashMap<String, String> xmlToMap(String xml)
+	{
+		HashMap<String, String> map = new HashMap<String, String>();
+		SAXReader reader = new SAXReader();
+		InputStream inputStream;
+		try {
+			inputStream = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+			Document document;
+			document = reader.read(inputStream);
+			// 得到xml根元素
+			Element root = document.getRootElement();
+			// 得到根元素的所有子节点
+			List<Element> elementList = root.elements();
+			// 遍历所有子节点
+			for (Element e : elementList)
+			{
+				map.put(e.getName(), e.getText());
+				System.out.println("String "+e.getName()+" ="+e.getText());
+			}
+			// 释放资源
+			inputStream.close();
+			inputStream = null;
+		} catch (UnsupportedEncodingException e1) {
+			map =null;
+		}
+		catch (IOException e1) {
+			map =null;
+		}
+		catch (DocumentException e1) {
+			map =null;
+		}
+		return map;
+	}
+	
+//	public static Object xmlToObjectInputStream(String xml,Class<?> clazz) throws IOException
+//	{
+//		StringReader reader =new StringReader(xml);
+//        ObjectInputStream in = xstream.createObjectInputStream(reader);
+//		return in;
+//	}
 }

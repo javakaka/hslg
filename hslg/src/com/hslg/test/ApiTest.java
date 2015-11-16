@@ -2347,6 +2347,38 @@ public class ApiTest {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	//微信app支付－爱心捐款
+	public static void weixinAppPayLoveDonate()
+	{
+//			String url ="http://localhost:8080/hslg/api/pay/weixin/app/validate.do";
+		String url ="http://120.25.253.240:8080/hslg/api/pay/weixin/app/validate.do";
+		IVO ivo =new IVO();
+		try {
+			ivo.set("user_id", "1");
+			ivo.set("user_id", "2");
+			ivo.set("money", "1");
+			ivo.set("service_name", "hslgWeiXinAppPayService");
+			String json =  VOConvert.ivoToJson(ivo);
+			System.out.println("\n 加密前 ivo to json ====>>"+json);
+			//加密
+			json =AesUtil.encode(json);
+			System.out.println("\n ivo to json ====>>"+json);
+			String res =NetUtil.getNetResponse(url, json,"UTF-8");
+			System.out.println("\n response json ====>> \n");
+			System.out.print(res);
+			res = AesUtil.decode(res);
+			OVO ovo =VOConvert.jsonToOvo(res);
+			System.out.println("\n decode response json ===========>>\n"+res);
+		} catch (JException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
 	public static void main(String args[])
 	{
 		System.out.println("\n==========request start=============");
@@ -2462,7 +2494,7 @@ public class ApiTest {
 //		查询善小财务汇总
 //		queryFinance();
 //		分页查询便民信息
-		queryConvennientInfoPage();
+//		queryConvennientInfoPage();
 //		首页搜索商品
 //		IndexPageSearchGoods();
 //		indexPageQueryBroadcast();
@@ -2473,6 +2505,8 @@ public class ApiTest {
 //		queryCommonServiceTypePage();
 //		分页查询通用服务
 //		queryCommonServicePage();
+//		爱心捐款
+		weixinAppPayLoveDonate();
 //		System.out.println("\n==========request  end=============");
 	}
 	

@@ -1,35 +1,51 @@
 package com.hslg.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.ezcloud.framework.common.Setting;
 import com.ezcloud.framework.exp.JException;
 import com.ezcloud.framework.plugin.pay.Unifiedorder;
+import com.ezcloud.framework.plugin.pay.WeixinPreOrderResult;
 import com.ezcloud.framework.service.Service;
 import com.ezcloud.framework.util.AesUtil;
 import com.ezcloud.framework.util.FieldUtil;
+import com.ezcloud.framework.util.MapUtils;
 import com.ezcloud.framework.util.SettingUtils;
 import com.ezcloud.framework.util.StringUtils;
+import com.ezcloud.framework.util.WeixinUtil;
 import com.ezcloud.framework.util.XmlUtil;
 import com.ezcloud.framework.vo.IVO;
 import com.ezcloud.framework.vo.OVO;
 import com.ezcloud.framework.vo.Row;
+import com.ezcloud.utility.DateUtil;
 import com.ezcloud.utility.StringUtil;
 
 /**   
  * @author shike001 
  * E-mail:510836102@qq.com   
  */
-@Component("cxhlWeiXinAppPayService")
+@Component("hslgWeiXinAppPayService")
 public class WeiXinAppPayService extends Service {
 
-	@Resource(name = "cxhlUserService")
+	private static Logger logger = Logger.getLogger(WeiXinAppPayService.class);
+	
+	//商家key API 密钥
+	private static final String SHOP_KEY ="haoshanlegouhaoshanlegou2015tong";
+	@Resource(name = "hslgUserService")
 	private UserService userService;
 	
-	@Resource(name = "cxhlOrderService")
-	private OrderService orderService;
+	@Resource(name = "hslgUserTokenService")
+	private UserTokenService userTokenService;
+	
+	@Resource(name = "hslgCommonwealLoveRecordService")
+	private CommonwealLoveRecordService orderService;
 	
 	public WeiXinAppPayService() 
 	{
@@ -78,42 +94,62 @@ public class WeiXinAppPayService extends Service {
 	{
 		OVO ovo =new OVO();
 		String user_id =ivo.getString("user_id");
-		String order_id =ivo.getString("order_id");
 		String app_ip =ivo.getString("app_ip");
+		String device =ivo.getString("device");
 		Row userRow =userService.find(user_id);
 		if(userRow == null)
 		{
 			ovo =new OVO(-20011,"用户不存在","用户不存在");
 			return ovo;
 		}
-		Row orderRow =orderService.find(order_id);
-		if(orderRow == null)
+		Row tokenRow =userTokenService.find(user_id);
+		if(tokenRow == null)
 		{
-			ovo =new OVO(-20011,"订单不存在","订单不存在");
+			ovo =new OVO(-20012,"用户未登录","用户未登录");
 			return ovo;
 		}
-		String order_no=orderRow.getString("order_no");
-		String order_state =orderRow.getString("state","");
-		if(order_state.equals("2"))
+		String money =ivo.getString("money","0");
+		if(StringUtils.isEmptyOrNull(money))
 		{
-			ovo =new OVO(-20011,"订单已完成之后，不能重复支付","订单已完成之后，不能重复支付");
+			ovo =new OVO(-20011,"捐赠金额不能为空","捐赠金额不能为空");
 			return ovo;
 		}
+		double dmoney =Double.parseDouble(money);
+		if(dmoney == 0)
+		{
+			ovo =new OVO(-20011,"捐赠金额不能为0","捐赠金额不能为0");
+			return ovo;
+		}
+		String order_no="";
+		String cur_time =DateUtil.getCurrentDateTime().replace(" ", "").replace(":", "").replace("-", "");
+		Random random =new Random(100);
+		int rand_int =random.nextInt(1000);
+		//倒数第三第四为定义：01 爱心捐赠02善小档案捐赠03公益项目捐赠
+		order_no =cur_time+"01"+String.valueOf(rand_int);
+		Row orderRow =new Row();
+		orderRow.put("user_id", user_id);
+		orderRow.put("love_id", "1");
+		orderRow.put("order_no", order_no);
+		orderRow.put("donate_date", DateUtil.getCurrentDate());
+		orderRow.put("money", money);
+		orderRow.put("pay_state", "0");
+		orderRow.put("pay_type", "3");
+		orderService.insert(orderRow);
+		String order_id =orderRow.getString("id");
 		Unifiedorder unifiiedorder =new Unifiedorder();
-		unifiiedorder.setAppid("wx44e3ee46a26f4e21");
-		unifiiedorder.setMch_id("1251662201");
+		unifiiedorder.setAppid("wxd0283113ebc9baac");
+		unifiiedorder.setMch_id("1287207001");
 		String nonce_str =StringUtil.getRandKeys(28).toUpperCase();
 		unifiiedorder.setNonce_str(nonce_str);
 		String sign ="";
-		String body ="订单:"+order_no+"支付备注";
+//		String body ="订单:"+order_no+"支付备注";
+		String body ="好善乐购爱心捐赠订单:"+order_no;
 		String out_trade_no =order_no;
 		unifiiedorder.setOut_trade_no(out_trade_no);
 		unifiiedorder.setBody(body);
 		String fee_type ="CNY";
 		unifiiedorder.setFee_type(fee_type);
 		String total_fee ="0";
-		String money =orderRow.getString("money");
-		double dmoney =Double.parseDouble(money);
 		dmoney =dmoney*100;//(分)
 		total_fee =StringUtils.subStrBeforeDotNotIncludeDot(String.valueOf(dmoney));
 		unifiiedorder.setTotal_fee(total_fee);
@@ -121,17 +157,100 @@ public class WeiXinAppPayService extends Service {
 		unifiiedorder.setSpbill_create_ip(spbill_create_ip);
 		Setting setting =SettingUtils.get();
 		String site_url =setting.getSiteUrl();
-		String notify_url =site_url+"/notify/weixin/pay/app.do";
+		String notify_url =site_url+"/api/pay/weixin/app/notify.do";
 		notify_url +="?order_no="+AesUtil.encode(order_no);
 		unifiiedorder.setNotify_url(notify_url);
 		String trade_type ="APP";
 		unifiiedorder.setTrade_type(trade_type);
-		String secret ="ced7357666afb8b245e68a610a9c50da";
-		unifiiedorder.calculateSign(unifiiedorder, secret);
-		String xml =unifiiedorder.getXmlStr();
-		System.out.println("weixin xml====>>"+xml);
-		ovo.set("status", "test");
-		System.out.println("test...........");
+		Row row =FieldUtil.getObjectNotEmptyFieldsUrlParamsStr(unifiiedorder, SHOP_KEY);
+		String xml =row.getString("xml","");
+		logger.info("发送给统一下单接口的xml数据＝＝＝＝＝＝>>"+xml);
+		String resp =WeixinUtil.createPreOrder(xml);
+		logger.info("统一下单接口返回的xml数据＝＝＝＝＝＝>>"+resp);
+		ovo =parsePreOrderResult(resp,device);
+		if(ovo.iCode<0)
+		{
+			return ovo;
+		}
+		//预付单处理成功 设置订单的状态0待支付1已支付未到账2支付完成
+		Row updateRow =new Row();
+		updateRow.put("id", order_id);
+		updateRow.put("pay_state", "1");
+		orderService.update(updateRow);
+		logger.info("APP调起微信支付的数据＝＝＝＝＝＝>>"+ovo.oForm);
+		return ovo;
+	}
+	
+	public OVO parsePreOrderResult(String xml,String device) throws JException
+	{
+		OVO ovo =null;
+		WeixinPreOrderResult result =null;
+		HashMap map=XmlUtil.xmlToMap(xml);
+		Row resultRow =MapUtils.convertMaptoRowWithoutNullField(map);
+		String return_code =resultRow.getString("return_code","");
+		String return_msg =resultRow.getString("return_msg","");
+		String appid =resultRow.getString("appid","");
+		String mch_id =resultRow.getString("mch_id","");
+		String nonce_str =resultRow.getString("nonce_str","");
+		String sign =resultRow.getString("sign","");
+		String result_code =resultRow.getString("result_code","");
+		String err_code =resultRow.getString("err_code","");
+		String err_code_desc =resultRow.getString("err_code_desc","");
+		String prepay_id =resultRow.getString("prepay_id","");
+		String trade_type =resultRow.getString("trade_type","");
+		//调用预付单成功
+		if(!StringUtils.isEmptyOrNull(return_code) && !StringUtils.isEmptyOrNull(result_code)
+		&& return_code.equalsIgnoreCase("SUCCESS") && result_code.equalsIgnoreCase("SUCCESS"))
+		{
+			ovo =new OVO(0,"预付单处理成功","预付单处理成功");
+			ovo.set("result", "success");
+			ArrayList list = new ArrayList();
+			list.add("appid");
+			list.add("partnerid");
+			list.add("prepayid");
+			list.add("noncestr");
+			list.add("timestamp");
+			list.add("package");
+			Row dataRow =new Row();
+			dataRow.put("appid", appid);
+			dataRow.put("partnerid", mch_id);
+			dataRow.put("prepayid", prepay_id);
+			dataRow.put("noncestr", nonce_str);
+			long time =System.currentTimeMillis()/1000;
+			dataRow.put("timestamp", time);
+			if(device.equals("1"))
+			{
+				dataRow.put("package", "prepay_id="+prepay_id);
+			}
+			else if(device.equals("2"))
+			{
+				dataRow.put("package", "Sign=WXPay");
+			}
+//			dataRow.put("package", "Sign=WXPay");
+			String new_sign =FieldUtil.getWeixinRequestSign(list, dataRow, SHOP_KEY);
+			ovo.set("appId", appid);
+			ovo.set("partnerId", mch_id);
+			ovo.set("prepayId", prepay_id);
+			ovo.set("nonceStr", nonce_str);
+			ovo.set("timeStamp", time);
+			if(device.equals("1"))
+			{
+				ovo.set("package", "prepay_id="+prepay_id);
+			}
+			else if(device.equals("2"))
+			{
+				ovo.set("package", "Sign=WXPay");
+			}
+//			ovo.set("package", "Sign=WXPay");
+			ovo.set("sign", new_sign);
+		}
+		else
+		{
+			ovo =new OVO(-10030,"预付单处理失败","预付单处理失败");
+			ovo.set("result", "fail");
+			ovo.set("err_code", err_code);
+			ovo.set("err_code_desc", err_code_desc);
+		}
 		return ovo;
 	}
 }
